@@ -61,7 +61,7 @@ class HomeController extends Controller
         // print_r($user_id);
         // print_r($contest_id); 
         // exit();
-
+        
         
         
             $contest_watch_query = DB::table('contest_watch')->insert([

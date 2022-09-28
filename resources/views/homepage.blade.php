@@ -120,24 +120,30 @@
                                   
                                        @php
                                             $user_id  = Auth::id();
-
                                             $watch_list = DB::table('contest_watch')->where('user_id', $user_id )->get();
+                                           
                                                 // echo "<pre>";
-                                                //     print_r($watch_list);
-                                                //     exit();
+                                                // print_r($watch_list);
+                                                // exit();
                                            
 
                                        @endphp
                                         @foreach ($watch_list as $value) 
                                         <?php
-                                         $watchlist_con_id[] =  $value->contest_id; 
-                                            print_r($watchlist_con_id);
+                                         $watchlist_con_id =  $value->contest_id; 
+                                           
+                                           
                                          ?>
-                                       
+                                         
+                                       @if($contest_data->contest_id == $watchlist_con_id)
+                                       <button data-id="{{$contest_data->contest_id}}" data-value="{{Auth::id()}}" id="watch_user_id" class="btn-Watch add_watch" >Watching</button>
+                                       @else
+                                       <button data-id="{{$contest_data->contest_id}}" data-value="{{Auth::id()}}" id="watch_user_id" class="btn-Watch add_watch" >Watch</button>
+                                       @endif
                                         @endforeach
                                      
                                         
-                                            <button data-id="{{$contest_data->contest_id}}" data-value="{{Auth::id()}}" id="watch_user_id" class="btn-Watch add_watch" >Watch</button>
+                                          
                                            
                                     
                                         </li>
