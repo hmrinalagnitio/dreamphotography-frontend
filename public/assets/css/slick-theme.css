@@ -1,0 +1,156 @@
+
+/* Arrows */
+.slick-prev,
+.slick-next {
+    font-size: 0;
+    line-height: 0;
+    position: absolute;
+    top: 100%;
+    display: block ;
+    padding: 0;
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    cursor: pointer;
+    color: transparent;
+    border: none;
+    outline: none;
+    width: 32px;
+    height: 26px;
+    transition: all .4s ease-in-out;
+}
+
+.slick-prev {
+    left: 46%;
+    z-index: 9;
+    margin-top:0px;
+}
+
+.slick-next {
+    right: 46%;
+    z-index: 9;
+    margin-top:0px;
+}
+
+
+.slick-dotted.slick-slider {
+    margin-bottom: 30px;
+}
+
+.slick-dots {
+    position: absolute;
+    bottom: 0px;
+    display: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+}
+
+.slick-dots li {
+    position: relative;
+    display: inline-block;
+    width:20px;
+    height:4px;
+    margin: 0 5px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.slick-dots li button {
+    font-size: 0;
+    line-height: 0;
+    display: block;
+    width:50px;
+    height:4px;
+    padding: 5px;
+    cursor: pointer;
+    color: transparent;
+    border: 0;
+    outline: none;
+    background: transparent;
+}
+
+.slick-dots li button:hover,
+.slick-dots li button:focus {
+    outline: none;
+}
+
+.slick-dots li button:hover:before,
+.slick-dots li button:focus:before {
+    opacity: 1;
+}
+
+.slick-dots li button:before {
+    font-family: 'slick';
+    font-size: 6px;
+    line-height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:20px;
+    height:3px;
+    content: '';
+    text-align: center;
+    opacity:0.4;
+    color: black;
+	background:#CD2323;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-dots li.slick-active button:before {
+	opacity:1;
+}
+
+
+
+.slick-prev, .slick-next {
+    top: auto;
+    bottom: 0;
+    border: 1px solid #2C1C15;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    background: none; 
+    color: #2C1C15;
+  }
+  
+  .slick-prev:hover,
+  .slick-next:hover {
+    color: #2A56AD;
+    border-color: #2A56AD;
+  }
+  
+  .slick-prev {
+    left: 50%;
+    margin-left: -30px;
+   
+  }
+  
+  .slick-next {
+    right: 50%;
+    margin-right: -30px;
+  }
+  
+  .slick-prev::before,
+  .slick-next::before {
+    font-family: 'FontAwesome';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    font-size: 20px;
+    line-height: 22px;
+  }
+  
+  
+  
+  .slick-prev::before {
+    content: "\f104";
+  }
+  .slick-next::before {
+    content: "\f105";
+  }
