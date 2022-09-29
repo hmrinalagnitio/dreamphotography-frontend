@@ -126,21 +126,18 @@
                                                 // print_r($watch_list);
                                                 // exit();
                                            
-
+                                                $contest_id =  $contest_data->contest_id;
                                        @endphp
-                                        @foreach ($watch_list as $value) 
-                                        <?php
-                                         $watchlist_con_id =  $value->contest_id; 
-                                           
-                                           
-                                         ?>
-                                         
-                                       @if($contest_data->contest_id == $watchlist_con_id)
-                                       <button data-id="{{$contest_data->contest_id}}" data-value="{{Auth::id()}}" id="watch_user_id" class="btn-Watch add_watch" >Watching</button>
-                                       @else
-                                       <button data-id="{{$contest_data->contest_id}}" data-value="{{Auth::id()}}" id="watch_user_id" class="btn-Watch add_watch" >Watch</button>
-                                       @endif
-                                        @endforeach
+                                      
+                                       
+                                         <button data-id="{{$contest_data->contest_id}}"  data-value="{{Auth::id()}}" id="watch_user_id" class="btn-Watch add_watch" >Watch</button>
+                              
+                                      
+                                       {{-- <button data-id="{{$contest_data->contest_id}}" data-value="{{Auth::id()}}" id="watch_user_id" class="btn-Watch add_watch" >Watch</button> --}}
+                                    
+                            
+                                   
+                                 
                                      
                                         
                                           

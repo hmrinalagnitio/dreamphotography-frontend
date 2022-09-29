@@ -54,23 +54,36 @@ class HomeController extends Controller
     }
 
     public function addwatch(Request $request){
-       $user_id =  $request->user_id; 
-       $contest_id = $request->contest_id;
+        $user_id =  $request->user_id; 
+        $contest_id = $request->contest_id;
+        $data =  ['user_id'=>$user_id, 'contest_id'=> $contest_id];
+        // print_r($contest_id); exit();
+        $q = DB::table('contest_watch')->where('user_id', $user_id)->where('contest_id','!=', $contest_id)->insert($data);
 
+        echo "<pre>";
+        print_r($q); exit();
+       
 
-        // print_r($user_id);
-        // print_r($contest_id); 
-        // exit();
+       
+
+       
+        
+    
+    
+        
+
+    //    $contest_watch_query = DB::table('contest_watch')->insert([
+    //     'user_id'=>$user_id,
+    //     'contest_id'=>$contest_id,
+        
+    // ]);
+    
+
+      
         
         
         
-            $contest_watch_query = DB::table('contest_watch')->insert([
-                'user_id'=>$user_id,
-                'contest_id'=>$contest_id,
-                
-            ]);
         
-        return response()->json(['action' => 'add','message'=>'Watchlist added successfully']);
 
     }
 
