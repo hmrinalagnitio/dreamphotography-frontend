@@ -53,7 +53,7 @@
     </div>
 </section>
 
-
+ 
 @foreach($contest_image_list as $image_list)
     @php
         $contest_cat_slug_name = json_decode($image_list->contest_cat_slug);

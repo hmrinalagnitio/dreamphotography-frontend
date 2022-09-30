@@ -618,6 +618,35 @@ $(document).ready(function() {
 
 });
 
+// =====================================
+//     home page show more contest
+// =====================================
+
+$(document).ready(function() {
+
+    $('#seeMore').on('click', function() {
+        var _token = $('input[name="_token"]').val();
+
+        function show_more_data(id = "", _token) {
+            $.ajax({
+                url: "{{route('showmore')}}",
+                method: "POST",
+                data: { id: id, _token: _token },
+                success: function(res) {
+                    $('#load_more_button').remove();
+                    $('#post_data').append(data);
+
+
+
+                }
+            })
+        }
+
+
+
+    });
+
+});
 
 
 

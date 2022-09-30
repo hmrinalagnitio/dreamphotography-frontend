@@ -22,6 +22,7 @@ class ImageUploadController extends Controller
         $contest_id = $request->contest_id;
         $user_id = Auth::id();
         $contest_image_list = DB::table('contests')->where('contest_id', $contest_id)->get();
+        
         return view('contest.imageUpload', ['contest_image_list'=>$contest_image_list]);
         
     }

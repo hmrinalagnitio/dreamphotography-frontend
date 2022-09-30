@@ -21,25 +21,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        
-       
-    }
-
+   
     public function homepage(){
-
         $contest_list = DB::table('contests')->where('is_status', 1)->orderBy('id', 'desc')->get();
-
-       
         // contest and prize amount table join 
-      
         $price_max_ammount =  DB::table('contest_prize_amounts')
                 ->select('contest_id', DB::raw('max(prize_amount) as max_prize'))
                 ->groupBy('contest_id')
                 ->orderBy('created_at', 'desc')
                 ->get();     
-       
         return view('homepage',
         [
             'contest_list'=>$contest_list, 
@@ -47,7 +37,38 @@ class HomeController extends Controller
           
          ]);
         
-      
+    }
+
+    // for load more 
+    public function ShowMore(Request $request){
+        if($request->ajax()){
+            if($request->id > 0){
+                $data = DB::table('contests')
+                            ->where('id', '<', $request->id)
+                            ->orderBy('id', 'DESC')
+                            ->limit(5)
+                            ->get();
+            }else{
+                $data = DB::table('contests')
+                            ->orderBy('id', 'desc')
+                            ->limit(5)
+                            ->get();
+
+            }
+            $output = '';
+            $last_id = '';
+
+            if(!$data->isEmpty()){
+                foreach($data as $row){
+                    $output .= '';
+                }
+            }else{
+                 $output .= '  <div class="btn__seeMore">
+                 <a href="#" id="seeMore" ><i class="fa fa-spinner" aria-hidden="true"></i> No data found</a>
+             </div>';
+            }
+        }
+        
     }
 
  

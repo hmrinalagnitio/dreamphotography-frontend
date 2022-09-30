@@ -40,6 +40,11 @@ Route::post('/checkEmail',[RegisterController::class, 'check'])->name('checkEmai
 Route::post('/homepage',[HomeController::class, 'homepage'])->name('homepagep');
 // for price filter list
 
+// for watching  
+Route::post('/watch/{user_id}',[HomeController::class, 'addwatch'])->name('watch');
+// for load more
+Route::get('/showmore',[HomeController::class, 'ShowMore'])->name('showmore');
+
 Route::get('/contestListSorting',[HomeController::class, 'contestListSorting'])->name('contestListSorting');
 // for View details page 
 Route::get('/viewdetails/{contest_id}',[ViewDetailsController::class, 'index'])->name('viewdetails');
@@ -51,7 +56,5 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::get('/imgUploadSuccess', [ImageUploadSuccessController::class, 'index'])->name('imgUploadSuccess');
 });
 
-// for watching  
-Route::post('/watch/{user_id}',[HomeController::class, 'addwatch'])->name('watch');
 
 

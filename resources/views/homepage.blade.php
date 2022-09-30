@@ -19,44 +19,26 @@
 
         <div class="row">
             <div class="col contest_ajax_list">
-
                 @if($contest_list)
-                
-          
                     @foreach($contest_list as $contest_data)
-                 
-                   
                         <div class="load-more contemt--wrapper">
                             <div class="listing-wrap">
                                 <div class="listing__title">
                                     <h2> <span id="contest_list_data">{{ $contest_data->contest_type_name }}</span>
                                     </h2>
-                                        
-                                  
                                     <div class="listing-design__price">
                                         <div class="ribbon__fold"></div>
-                                     
                                        <div class="ribbon__text">
                                         @php
                                        $max_prize_data =  json_decode(json_encode($price_max_ammount));
-                                      
                                         @endphp
-                                   
                                            @foreach($max_prize_data as $item)
                                         $ <?php echo $item->max_prize;  ?>
 
                                         @endforeach
-                            
-                                      
                                       </div>
-                                    
-                                        
-                                      
                                     </div>
-                                 
                                 </div>
-
-
                             </div>
                             <div class="ribbon ribbon--large ribbon--info" data-tooltip=""
                                 data-tooltip-content="[data-price-tooltip-content-1188035]">
@@ -162,7 +144,7 @@
                 @endphp
             
                 <div class="btn__seeMore">
-                    <a href="#" id="seeMore"><i class="fa fa-spinner" aria-hidden="true"></i> Show More</a>
+                    <a href="#" id="seeMore" ><i class="fa fa-spinner" aria-hidden="true"></i> Show More</a>
                 </div>
           
             </div>
