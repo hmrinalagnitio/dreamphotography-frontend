@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\WacthList;
 
 class HomeController extends Controller
 {
@@ -37,11 +38,7 @@ class HomeController extends Controller
                 ->select('contest_id', DB::raw('max(prize_amount) as max_prize'))
                 ->groupBy('contest_id')
                 ->orderBy('created_at', 'desc')
-                ->get();
-
-       
-        
-                        
+                ->get();     
        
         return view('homepage',
         [
@@ -53,37 +50,34 @@ class HomeController extends Controller
       
     }
 
+ 
+
+
+
     public function addwatch(Request $request){
-        $user_id =  $request->user_id; 
-        $contest_id = $request->contest_id;
-        $data =  ['user_id'=>$user_id, 'contest_id'=> $contest_id];
-        // print_r($contest_id); exit();
-        $q = DB::table('contest_watch')->where('user_id', $user_id)->where('contest_id','!=', $contest_id)->insert($data);
-
-        echo "<pre>";
-        print_r($q); exit();
        
+        if($request->ajax()){
+            $data = $request->all();
+        //    dd($data);
+            $countWatchlist = WacthList::countWatchlist($data['contest_id']);
 
-       
-
-       
-        
+            // print_r($countWatchlist); exit();
+            
+            $wishlist = new WacthList;
+            if($countWatchlist == 0){
+                $wishlist->contest_id = $data['contest_id'];
+                $wishlist->user_id = $data['user_id']; 
+                $wishlist->is_status = 1;
+                $wishlist ->save();
+                return response()->json(['action' => 'add','message'=>'Watchlist added successfully']);
+            }else{
+                WacthList::where(['user_id' => Auth::user()->id,
+                'contest_id'=> $data['contest_id']])->delete();
+                return response()->json(['action' => 'remove','message'=>'Remove from Watchlist ']);
+            }
     
+        }
     
-        
-
-    //    $contest_watch_query = DB::table('contest_watch')->insert([
-    //     'user_id'=>$user_id,
-    //     'contest_id'=>$contest_id,
-        
-    // ]);
-    
-
-      
-        
-        
-        
-        
 
     }
 

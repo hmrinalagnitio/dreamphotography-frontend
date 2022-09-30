@@ -588,14 +588,14 @@ $(document).ready(function() {
     $('.add_watch').on('click', function() {
 
         var contest_id = $(this).data("id");
-        alert(contest_id);
+
         var user_id = $('#watch_user_id').data('value');
-        alert(user_id);
+
         if (user_id == "") {
             window.location.href = 'login';
             // alert(' not login');
         } else {
-            alert('u are login');
+            // alert('u are login');
             $.ajax({
                 method: "post",
                 url: "/watch/" + user_id,
@@ -607,6 +607,8 @@ $(document).ready(function() {
                     console.log(res);
                     if (res.action == 'add') {
                         $('button[data-id=' + contest_id + ']').html('Watching');
+                    } else if (res.action == 'remove') {
+                        $('button[data-id=' + contest_id + ']').html('Watch');
                     }
                 }
             });
