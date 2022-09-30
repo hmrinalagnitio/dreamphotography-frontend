@@ -586,11 +586,8 @@ $('.read-more-hide').on('click', function(e) {
 $(document).ready(function() {
 
     $('.add_watch').on('click', function() {
-
         var contest_id = $(this).data("id");
-
         var user_id = $('#watch_user_id').data('value');
-
         if (user_id == "") {
             window.location.href = 'login';
             // alert(' not login');
@@ -612,15 +609,7 @@ $(document).ready(function() {
                     }
                 }
             });
-
         }
-
-
-
-
-
-
-
     })
 
 

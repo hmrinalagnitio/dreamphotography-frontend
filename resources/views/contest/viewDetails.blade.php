@@ -29,7 +29,7 @@
       <div class="col-lg-8 col-md-6">
         <div class="">
           <h2 class="view-details__tiitle">{{$contest_data->contest_name}}</h2>
-          <a href="payment-now.html" class="btn__open">Open</a>
+          <a href="javascript:void();" class="btn__open">Open</a>
         </div>
       </div>
 
@@ -37,7 +37,12 @@
         <div class="text-align-right">
           <h3 class="contest__id">Contests ID: <a href="#">{{$contest_data->contest_id}}</a></h3>              
           <ul class="guarnteed">
-            <li><img src="assets/images/Watch__icon.png" alt=""> Watch(55)</li>
+            @php 
+              $q = DB::table('wacth_lists')->where('contest_id', $contest_data->contest_id)->count();
+              // echo "<pre>";
+              // print_r($q); exit();
+            @endphp
+            <li><img src="assets/images/Watch__icon.png" alt=""> Watch({{$q}})</li>
           </ul>
 
         
