@@ -21,15 +21,22 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
+    public function index(){
+        return view('loadmore');
+    }
    
+    
     public function homepage(){
-        $contest_list = DB::table('contests')->where('is_status', 1)->orderBy('id', 'desc')->get();
+    
+        $contest_list = DB::table('contests')->where('is_status', 1)->orderBy('id', 'desc')->limit(2)->get();
         // contest and prize amount table join 
         $price_max_ammount =  DB::table('contest_prize_amounts')
                 ->select('contest_id', DB::raw('max(prize_amount) as max_prize'))
                 ->groupBy('contest_id')
                 ->orderBy('created_at', 'desc')
-                ->get();     
+                ->get();  
+       
         return view('homepage',
         [
             'contest_list'=>$contest_list, 
@@ -38,52 +45,140 @@ class HomeController extends Controller
          ]);
         
     }
+    
 
     // for load more 
-    public function ShowMore(Request $request){
+
+    public function load_data(Request $request){
         if($request->ajax()){
             if($request->id > 0){
                 $data = DB::table('contests')
-                            ->where('id', '<', $request->id)
-                            ->orderBy('id', 'DESC')
-                            ->limit(5)
-                            ->get();
+                        ->where('id', '<', $request->id)
+                        ->orderBy('id', 'desc')
+                        ->limit(3)
+                        ->get();                
             }else{
                 $data = DB::table('contests')
-                            ->orderBy('id', 'desc')
-                            ->limit(5)
-                            ->get();
-
+                        ->where('is_status', 1)
+                        ->orderBy('id', 'desc')
+                        ->limit(3)
+                        ->get();
+               
             }
             $output = '';
-            $last_id = '';
-
+            $last_id = ''; 
             if(!$data->isEmpty()){
                 foreach($data as $row){
-                    $output .= '';
+                    if(strlen($row->description_one) > 150){
+                        $description = substr($row->description_one,0,150);
+                       $post_description = substr($row->description_one,150,strlen($row->description_one));
+                    }
+                    // for prize section 
+                    $prize =  DB::table('contest_prize_amounts')->where('contest_id', $row->contest_id)->max('prize_amount');
+                    // for days hours count
+                    $now = \Carbon\Carbon::now();
+                    $end_date = $row->closing_date;
+                    $end_time = $row->closing_time;
+                    $cDate = \Carbon\Carbon::parse($end_date);
+                    $cHours = \Carbon\Carbon::parse($end_time);
+                    $end_days = $now->diffInDays($cDate );
+                    $end_hours = $now->diffInHours($cHours);
+                    // for authentication check 
+                    $countWatchlist = 0 ;
+                    if(Auth::check()){
+                        $countWatchlist =WacthList::countWatchlist($row->contest_id);        
+                    }
+                    if($countWatchlist > 0){
+                    $w = 'Watching';
+                    }else{
+                    $w = 'Watch';
+                    }
+                    $output .= '
+                    <div class="load-more contemt--wrapper">
+                        <div class="listing-wrap">
+                            <div class="listing__title">
+                                <h2> <span id="contest_list_data">'. $row->contest_type_name .'</span></h2>
+                            <div class="listing-design__price">
+                                <div class="ribbon__fold"></div>
+                               <div class="ribbon__text">
+                                $ '.$prize.'
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ribbon ribbon--large ribbon--info" data-tooltip=""
+                                data-tooltip-content="[data-price-tooltip-content-1188035]">
+                                <div class="listing__description text-box" data-maxlength="210">
+                                    <h3><a href="#">'. $row->contest_name.'</a>
+                                    </h3>
+                                    <div class="comment">'.$description .'
+                                        <span class="read-more-show "> <a class="btn-view-details">View Details</a></span>
+                                        <span class="read-more-content hide_content"> '.$post_description.'
+                                        <span class="read-more-hide "><a class="btn-view-details">View less</a></span> </span>
+                                   </div>
+                                   <br>
+                                   <div class="participate">
+                                    <a href="'. route('viewdetails',['contest_id'=>$row->contest_id]) .'"
+                                        class="btn-participate-now">Participate Now</a>
+                                   </div>
+                                </div>
+                                <div class="listing__last">
+                                <ul>
+                                    <li><i class="fa fa-user"></i>
+                                        <p>100 <span>Paticipant</span></p>
+                                    </li>
+                                    <li>
+                                        <div class="clockdiv" data-date="May 13, 2022 21:14:01">
+                                            <i class="fa fa-clock-o"></i>
+                                            <div class="clockdiv__date">
+                                            </div>
+                                            <div class="clockdiv__date"> 
+                                                <p><span class="days">'.$end_days.' Days </span> </p> 
+                                            </div>
+                                            <div class="clockdiv__date">
+                                                <p><span class="hours"> '.$end_hours.' Hours</span></p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <input type="hidden" value=" '.Auth::id().'" id="user_id">
+                                    <li>
+                                     <button data-id="'.$row->contest_id.'"  data-value="'.Auth::id().'" id="watch_user_id" class="btn-Watch add_watch" >
+                                      '.$w.'
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                     </div>
+                  </div>        
+                </div>
+                 ';
+                    $last_id = $row->id; 
                 }
+                $output .= '
+               
+                    <div id="load_more" class="btn__seeMore">
+                        <button type="button" name="load_more_button"  
+                        data-id="'.$last_id.'" id="load_more_button"><i class="fa fa-spinner" aria-hidden="true"></i> Show More</button>
+                    </div>
+                ';
+
             }else{
-                 $output .= '  <div class="btn__seeMore">
-                 <a href="#" id="seeMore" ><i class="fa fa-spinner" aria-hidden="true"></i> No data found</a>
-             </div>';
+                $output .= '
+                    <div id="load_more">
+                        <button type= "button" name="load_more_button" class="btn btn-info ">No Data Found </button>
+                        </div>
+                ';
             }
+            echo $output; 
         }
         
     }
-
- 
-
-
 
     public function addwatch(Request $request){
        
         if($request->ajax()){
             $data = $request->all();
-        //    dd($data);
             $countWatchlist = WacthList::countWatchlist($data['contest_id']);
-
-            // print_r($countWatchlist); exit();
-            
             $wishlist = new WacthList;
             if($countWatchlist == 0){
                 $wishlist->contest_id = $data['contest_id'];
@@ -107,70 +202,25 @@ class HomeController extends Controller
     public function contestListSorting(Request $request){
 
         $getSortName = $request->getname;
-        $query = DB::table('contests')->query();
-
-        $prize_sort = $query->get();
-
-        
-
-        
-        
-  
-        // if($getSortName=='newdesc'){
-        //     $contest_sorting_data = DB::table('contests')->where('is_status', 1)->orderBy('id', 'desc')->get();
-           
-           
-        //     return response()->json([
-        //         'ststus'=>200,
-        //         'contest_sorting_data'=>$contest_sorting_data,
+      
+         if($getSortName=='DESC'){
+           $contest_list = DB::table('contests')->where('is_status', 1)->orderBy('id', 'desc')->get();
+          
+             return response()->json([
+                'ststus'=>200,
+                'contest_list'=>$contest_list,
                 
-        //     ]);
-        // }else{
+            ]);
+         }else{
            
-        //     $contest_list = DB::table('contests')->where('is_status', 1)->orderBy('id', 'desc')->get();
-        //     // print_r($contest_list); exit();
-
-        //     foreach($contest_list as $contest_data){
-        //         $prizes[] = json_decode($contest_data->prize_amount);
-        //     }
-
-        //     //  print_r($prizes); exit();
-
-        //     if($getSortName == 'sort'){
-        //         $getSortName($prizes);
-        //         $arrlength = count($prizes);
-        //         for($x = 0; $x < $arrlength; $x++) {
-        //         $prize[] = $prizes[$x];
-               
-        //         }
-        //     }else{
-        //         $getSortName($prizes);
-        //         $arrlength = count($prizes);
-        //         for($x = 0; $x < $arrlength; $x++) {
-        //         $prize[] = $prizes[$x];
-               
-        //         }
-        //     }
-        //     $prize_data = json_decode(json_encode($prize));
-
-
-        //     print_r($prize_data);
-        //     exit();
+            $contest_list = DB::table('contests')->where('is_status', 1)->orderBy('id', 'asc')->get();
            
-        //     $contest_prize_sorting =  DB::table('contests')->whereRaw('prize_amount', $prize_data)->get();
-        //     echo "<pre>";
-        //     print_r($contest_prize_sorting); exit();
-
-            
-        //     return response()->json([
-        //         'ststus'=>200,
-        //         'prize'=>$prize,
-        //         'data'=>$data
-        //         // 'contest_sorting_data'=>$contest_sorting_data,
+            return response()->json([
+                'ststus'=>200,
+                'contest_list'=>$contest_list,
                 
-              
-        //     ]);
-        // }
+            ]);
+        }
           
     }
 

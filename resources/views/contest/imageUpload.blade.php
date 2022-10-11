@@ -56,14 +56,16 @@
  
 @foreach($contest_image_list as $image_list)
     @php
+        
         $contest_cat_slug_name = json_decode($image_list->contest_cat_slug);
+       
         $i = 0;
     @endphp
 
 
     <section class="images-upload-section">
 
-        @foreach($contest_cat_slug_name as $cat_name)
+        @foreach($image_list as $cat_name)
 
 
             <div class="container">

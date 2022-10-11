@@ -23,7 +23,7 @@ Auth::routes();
 // Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // for my code
-Route::get('/',[HomeController::class,'homepage'])->name('homepage');
+// Route::get('/',[HomeController::class,'homepage'])->name('homepage');
 // for login page 
 Route::get('/login',[LoginController::class,'login'])->name('login');
 Route::post('/create',[LoginController::class, 'create'])->name('create');
@@ -36,14 +36,15 @@ Route::post('/checkEmail',[RegisterController::class, 'check'])->name('checkEmai
 
 
 // for homepage 
-// desc order list show
-Route::post('/homepage',[HomeController::class, 'homepage'])->name('homepagep');
+
+// Route::post('/home',[HomeController::class, 'homepage'])->name('homepagep');
 // for price filter list
 
 // for watching  
 Route::post('/watch/{user_id}',[HomeController::class, 'addwatch'])->name('watch');
 // for load more
-Route::get('/showmore',[HomeController::class, 'ShowMore'])->name('showmore');
+Route::get('/',[HomeController::class,'index'])->name('homepage');
+Route::post('/loadmore', [HomeController::class, 'load_data'])->name('loadmore.load_data');
 
 Route::get('/contestListSorting',[HomeController::class, 'contestListSorting'])->name('contestListSorting');
 // for View details page 

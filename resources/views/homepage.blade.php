@@ -8,10 +8,12 @@
             <label>Sort By</label>
             <div class="select_box">
                 <select name="sort" id="sort">
+                   
                     <option value="newdesc">Newest First</option>
-                    <option value="sort">Price -- Low to High</option>
+                    <option value="ASC">Price -- Low to High</option>
                     <option value="rsort">Price -- High to Low</option>
-
+                  
+                  
                 </select>
             </div>
         </div>
@@ -21,6 +23,7 @@
             <div class="col contest_ajax_list">
                 @if($contest_list)
                     @foreach($contest_list as $contest_data)
+                           
                         <div class="load-more contemt--wrapper">
                             <div class="listing-wrap">
                                 <div class="listing__title">
@@ -29,13 +32,12 @@
                                     <div class="listing-design__price">
                                         <div class="ribbon__fold"></div>
                                        <div class="ribbon__text">
+                                       
                                         @php
-                                       $max_prize_data =  json_decode(json_encode($price_max_ammount));
-                                        @endphp
-                                           @foreach($max_prize_data as $item)
-                                        $ <?php echo $item->max_prize;  ?>
-
-                                        @endforeach
+                                       $prize =  DB::table('contest_prize_amounts')->where('contest_id', $contest_data->contest_id)->max('prize_amount');
+                                        
+                                         @endphp
+                                        $ {{$prize}}
                                       </div>
                                     </div>
                                 </div>
@@ -131,8 +133,9 @@
 
                             </div>
                         </div>
+                        <input type="hidden" value="<?php $last_id = $contest_data->id; ?>" id="last_id">
                           
-
+                      
                     @endforeach
                    
 
@@ -144,7 +147,8 @@
                 @endphp
             
                 <div class="btn__seeMore">
-                    <a href="#" id="seeMore" ><i class="fa fa-spinner" aria-hidden="true"></i> Show More</a>
+                    {{csrf_field()}}
+                    <a id="seeMore" ><i class="fa fa-spinner" aria-hidden="true"></i> Show More</a>
                 </div>
           
             </div>

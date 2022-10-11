@@ -479,8 +479,10 @@ $(document).ready(function() {
 
 $(document).ready(function() {
 
+
     $('#sort').on('change', function() {
         var getname = $("#sort option:selected").val();
+        alert(getname);
         $.ajax({
             type: 'get',
             url: "/contestListSorting",
@@ -490,57 +492,30 @@ $(document).ready(function() {
             success: function(data) {
                 $('.contest_ajax_list').html('');
 
-                var contest_sorting_data = data.contest_sorting_data;
+                var contest_list = data.contest_list;
 
                 console.log(data);
                 var html = '';
-                $.each(contest_sorting_data, function(key, value) {
+                $.each(contest_list, function(key, value) {
 
 
                     html += `
-                    <div class="load-more ">
-                         <div class="listing-wrap">
+                    <div class="load-more contemt--wrapper">
+                    <div class="listing-wrap">
                         <div class="listing__title">
                             <h2> <span id="contest_list_data">` + value.contest_type_name + `</span></h2>
-                            <div class="listing-design__price">
+                        <div class="listing-design__price">
                             <div class="ribbon__fold"></div>
-                            <div class="ribbon__text">`
-
-                    +
-                    value.prize_amount +
-                        `</div>
-
-                        </div>
-                            </div>
-                            <div class="listing__description text-box" data-maxlength="210">
-                                <h3><a href="` + '/viewdetails/' + value.id + `">` + value.contest_name + `</a></h3>
-                                <p>` + value.description_one + `</p>
-                                <a href="` + '/viewdetails/' + value.id + `" class="btn-view-details">View Details</a>
-                                <a href="` + '/viewdetails/' + value.id + `" class="btn-participate-now">Participate Now</a>
-                            </div>
-                            <div class="listing__last">
-                                <ul>
-                                    <li><i class="fa fa-user"></i>
-                                        <p>100 <span>Paticipant</span></p>
-                                    </li>
-                                    <li>
-                                        <div class="clockdiv" data-date="May 13, 2022 21:14:01">
-                                            <i class="fa fa-clock-o"></i>
-                                            <div class="clockdiv__date">
-                                                <p><span class="days"></span> Days,</p>
-                                            </div>
-                                            <div class="clockdiv__date">
-                                                <p><span class="hours"></span> Hours</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li><a href="" class="btn-Watch">Watch</a></li>
-    
-                                </ul>
+                           <div class="ribbon__text">
+                            $ '.$prize.'
                           </div>
                         </div>
                     </div>
-                     `;
+                    
+                </div>
+
+                       
+                 `;
 
                 });
 
@@ -560,22 +535,25 @@ $(document).ready(function() {
 // =====================================
 
 // Hide the extra content initially, using JS so that if JS is disabled, no problemo:
-$('.read-more-content').addClass('hide_content')
-$('.read-more-show, .read-more-hide').removeClass('hide_content')
+$(document).ready(function() {
 
-// Set up the toggle effect:
-$('.read-more-show').on('click', function(e) {
-    $(this).next('.read-more-content').removeClass('hide_content');
-    $(this).addClass('hide_content');
-    e.preventDefault();
-});
+    $('.read-more-content').addClass('hide_content');
+    $('.read-more-show, .read-more-hide').removeClass('hide_content');
 
-// Changes contributed by @diego-rzg
-$('.read-more-hide').on('click', function(e) {
-    var p = $(this).parent('.read-more-content');
-    p.addClass('hide_content');
-    p.prev('.read-more-show').removeClass('hide_content'); // Hide only the preceding "Read More"
-    e.preventDefault();
+    // Set up the toggle effect:
+    $(document).on('click', '.read-more-show', function(e) {
+        $(this).next('.read-more-content').removeClass('hide_content');
+        $(this).addClass('hide_content');
+        e.preventDefault();
+    });
+
+    // Changes contributed by @diego-rzg
+    $(document).on('click', '.read-more-hide', function(e) {
+        var p = $(this).parent('.read-more-content');
+        p.addClass('hide_content');
+        p.prev('.read-more-show').removeClass('hide_content'); // Hide only the preceding "Read More"
+        e.preventDefault();
+    });
 });
 
 //======================================
@@ -585,7 +563,8 @@ $('.read-more-hide').on('click', function(e) {
 
 $(document).ready(function() {
 
-    $('.add_watch').on('click', function() {
+    $(document).on('click', '.add_watch', function() {
+
         var contest_id = $(this).data("id");
         var user_id = $('#watch_user_id').data('value');
         if (user_id == "") {
@@ -622,30 +601,57 @@ $(document).ready(function() {
 //     home page show more contest
 // =====================================
 
+// $(document).ready(function() {
+
+//     $('#seeMore').on('click', function() {
+
+//         var _token = $('input[name="_token"]').val();
+
+//         alert(_token);
+//         $.ajax({
+//             url: "/home",
+//             method: "POST",
+//             data: {
+//                 pnumber: 2,
+//                 _token: _token
+//             },
+//             success: function(res) {
+//                 console.log(res);
+
+//             }
+//         })
+
+
+
+
+//     });
+
+// });
+
 $(document).ready(function() {
 
-    $('#seeMore').on('click', function() {
-        var _token = $('input[name="_token"]').val();
+    var _token = $('input[name="_token"]').val();
+    load_data('', _token);
 
-        function show_more_data(id = "", _token) {
-            $.ajax({
-                url: "{{route('showmore')}}",
-                method: "POST",
-                data: { id: id, _token: _token },
-                success: function(res) {
-                    $('#load_more_button').remove();
-                    $('#post_data').append(data);
+    function load_data(id = "", _token) {
+        $.ajax({
+            url: "{{route('loadmore.load_data')}}",
+            method: "POST",
+            data: { id: id, _token: _token },
+            success: function(data) {
+                $('.load_more_button').remove();
+                $('#post_data').append(data);
 
+            }
+        });
+    }
 
-
-                }
-            })
-        }
-
-
+    $(document).on('click', '.load_more_button', function() {
+        var id = $(this).data('id');
+        $('.load_more_button').html('<b>Loading ..</b>');
+        load_data(id, _token);
 
     });
-
 });
 
 
