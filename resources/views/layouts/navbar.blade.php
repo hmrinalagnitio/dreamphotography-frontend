@@ -45,7 +45,7 @@
         <div class="container clearfix">
 
             <div class="logo">
-                <a href="{{ route('homepage') }}"><img src="{{ asset('') }}assets/images/logo.png" class="img-fluid" alt="Dream Photography"></a>
+                <a href="{{ route('home') }}"><img src="{{ asset('') }}assets/images/logo.png" class="img-fluid" alt="Dream Photography"></a>
             </div>
 
             <div class="toggle-menu"><i class="fa fa-bars" aria-hidden="true"></i></div>

@@ -456,8 +456,6 @@ $(document).ready(function() {
             var name = $('#name').val();
             var email = $('#email').val();
             var password = $('#password').val();
-
-
             if (password == '' || email == '' || name == '') {
                 $("#register_btn").attr("disabled", true);
             } else {
@@ -477,57 +475,31 @@ $(document).ready(function() {
 //  contest list filter
 // =========================
 
-$(document).ready(function() {
+// $(document).ready(function() {
 
 
-    $('#sort').on('change', function() {
-        var getname = $("#sort option:selected").val();
-        alert(getname);
-        $.ajax({
-            type: 'get',
-            url: "/contestListSorting",
-            data: {
-                'getname': getname
-            },
-            success: function(data) {
-                $('.contest_ajax_list').html('');
+//     $('#sort').on('change', function() {
+//         var getname = $("#sort option:selected").val();
+//         alert(getname);
+//         $.ajax({
+//             type: 'get',
+//             url: "/contestListSorting",
+//             data: {
+//                 'getname': getname
+//             },
+//             success: function(data) {
+//                 $('.load_more_button').remove();
+//                 $('#post_data').append(data);
 
-                var contest_list = data.contest_list;
+//             }
+//         });
+//         $('.load-more ').remove();
 
-                console.log(data);
-                var html = '';
-                $.each(contest_list, function(key, value) {
+//     });
+
+// });
 
 
-                    html += `
-                    <div class="load-more contemt--wrapper">
-                    <div class="listing-wrap">
-                        <div class="listing__title">
-                            <h2> <span id="contest_list_data">` + value.contest_type_name + `</span></h2>
-                        <div class="listing-design__price">
-                            <div class="ribbon__fold"></div>
-                           <div class="ribbon__text">
-                            $ '.$prize.'
-                          </div>
-                        </div>
-                    </div>
-                    
-                </div>
-
-                       
-                 `;
-
-                });
-
-                $(".contest_ajax_list").append(html);
-
-            }
-        });
-        $('.load-more ').remove();
-
-    });
-
-});
 
 
 // ====================================
@@ -597,62 +569,8 @@ $(document).ready(function() {
 
 });
 
-// =====================================
-//     home page show more contest
-// =====================================
-
-// $(document).ready(function() {
-
-//     $('#seeMore').on('click', function() {
-
-//         var _token = $('input[name="_token"]').val();
-
-//         alert(_token);
-//         $.ajax({
-//             url: "/home",
-//             method: "POST",
-//             data: {
-//                 pnumber: 2,
-//                 _token: _token
-//             },
-//             success: function(res) {
-//                 console.log(res);
-
-//             }
-//         })
 
 
-
-
-//     });
-
-// });
-
-$(document).ready(function() {
-
-    var _token = $('input[name="_token"]').val();
-    load_data('', _token);
-
-    function load_data(id = "", _token) {
-        $.ajax({
-            url: "{{route('loadmore.load_data')}}",
-            method: "POST",
-            data: { id: id, _token: _token },
-            success: function(data) {
-                $('.load_more_button').remove();
-                $('#post_data').append(data);
-
-            }
-        });
-    }
-
-    $(document).on('click', '.load_more_button', function() {
-        var id = $(this).data('id');
-        $('.load_more_button').html('<b>Loading ..</b>');
-        load_data(id, _token);
-
-    });
-});
 
 
 

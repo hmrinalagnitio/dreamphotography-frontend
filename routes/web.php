@@ -43,10 +43,10 @@ Route::post('/checkEmail',[RegisterController::class, 'check'])->name('checkEmai
 // for watching  
 Route::post('/watch/{user_id}',[HomeController::class, 'addwatch'])->name('watch');
 // for load more
-Route::get('/',[HomeController::class,'index'])->name('homepage');
+Route::get('/',[HomeController::class,'index'])->name('home');
 Route::post('/loadmore', [HomeController::class, 'load_data'])->name('loadmore.load_data');
 
-Route::get('/contestListSorting',[HomeController::class, 'contestListSorting'])->name('contestListSorting');
+Route::post('/contestListSorting',[HomeController::class, 'contestListSorting'])->name('contestListSorting');
 // for View details page 
 Route::get('/viewdetails/{contest_id}',[ViewDetailsController::class, 'index'])->name('viewdetails');
 

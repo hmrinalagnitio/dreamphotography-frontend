@@ -10,7 +10,7 @@
                 <div class="col">
                     <div class="link-page">
                         <ul>
-                            <li><a href="{{ route('homepage') }}">Home</a> ></li>
+                            <li><a href="{{ route('home') }}">Home</a> ></li>
                             <li><a href="{{ url()->previous() }}">Back</a></li>
                         </ul>
                     </div>
@@ -49,41 +49,35 @@
                         <p><span>Please, upload your photos In "Jpg" format. Make sure that each Me Is no larger than 2
                                 MB.</span></p>
             </div>
-        </div>
+        </div> 
     </div>
 </section>
 
  
 @foreach($contest_image_list as $image_list)
     @php
-        
-        $contest_cat_slug_name = json_decode($image_list->contest_cat_slug);
+        $contest_cat_slug_name = $image_list->contest_cat_name;
        
+     
         $i = 0;
     @endphp
-
-
     <section class="images-upload-section">
-
-        @foreach($image_list as $cat_name)
-
-
+       
             <div class="container">
                 <div class="image-upload-box">
-                    <h2>{{ $cat_name }}</h2>
+                    <h2>{{ $contest_cat_slug_name }}</h2>
 
                     <div class="row">
                         @php
-
-
-                            $num_of_img = json_decode($image_list->number_of_image);
+                            $num_of_img = $image_list->number_of_image;
                         @endphp
-                        @for($q= 0; $q < $num_of_img[$i]; $q++)
+                         @for($q= 0; $q < $num_of_img[$i]; $q++)
                             @php
-                                $uid = $cat_name.$q;
+                             $uid = $contest_cat_slug_name.$q;  
                             @endphp
                             <div class="col-md-3">
                                 <div class="upload-img">
+                                    <img src="{{asset('')}}assets/images/no-up.jpg" alt="">
                                     <img src="" id="imagePreview{{ $uid }}" name="picture" alt="">
                                 </div>
                                 <button class="btn-img-upload apply4job">Upload Image</button>
@@ -93,8 +87,8 @@
 
                                     <form action="{{route('insertimage')}}" id="upload-image-form" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="hidden" name="contest_name" id="contest_name" value="{{ $image_list->contest_name }}">
-                                        <input type="hidden" name="category" id="category" value="{{ $cat_name }}">
+                                        {{-- <input type="hidden" name="contest_name" id="contest_name" value="{{ $image_list->contest_name }}"> --}}
+                                        <input type="hidden" name="category" id="category" value="{{ $contest_cat_slug_name }}">
                                         <input type="hidden" name="img_no" id="img_no" value="{{ $q+1 }}">
                                         <input type="hidden" name="con_id" id="con_id"
                                             value="{{ $image_list->contest_id }}">
@@ -181,7 +175,7 @@
 
         </div>
 
-@endforeach
+
 </section>
 @endforeach
 

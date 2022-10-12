@@ -10,7 +10,7 @@
               <div class="col">
                   <div class="link-page">
                       <ul>
-                          <li><a href="{{route('homepage')}}">Home</a> ></li>
+                          <li><a href="{{route('home')}}">Home</a> ></li>
                        
                       </ul>
                   </div>
@@ -39,10 +39,9 @@
           <ul class="guarnteed">
             @php 
               $q = DB::table('wacth_lists')->where('contest_id', $contest_data->contest_id)->count();
-              // echo "<pre>";
-              // print_r($q); exit();
+             
             @endphp
-            <li><img src="assets/images/Watch__icon.png" alt=""> Watch({{$q}})</li>
+            <li><img src="{{ asset('')}}/assets/images/Watch__icon.png" alt=""> Watch({{$q}})</li>
           </ul>
 
         
@@ -69,7 +68,7 @@
 
           @endphp
      
-          <img src="assets/images/timeline.png" alt=""> You have {{$end_days}} days,  {{$end_hours}} hour left to Submit Photo
+          <img src="{{ asset('')}}/assets/images/timeline.png" alt=""> You have {{$end_days}} days,  {{$end_hours}} hour left to Submit Photo
         </div>
       </div>
     </div>
