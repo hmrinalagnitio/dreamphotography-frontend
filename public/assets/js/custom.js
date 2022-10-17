@@ -471,33 +471,7 @@ $(document).ready(function() {
 });
 
 
-// ========================
-//  contest list filter
-// =========================
 
-// $(document).ready(function() {
-
-
-//     $('#sort').on('change', function() {
-//         var getname = $("#sort option:selected").val();
-//         alert(getname);
-//         $.ajax({
-//             type: 'get',
-//             url: "/contestListSorting",
-//             data: {
-//                 'getname': getname
-//             },
-//             success: function(data) {
-//                 $('.load_more_button').remove();
-//                 $('#post_data').append(data);
-
-//             }
-//         });
-//         $('.load-more ').remove();
-
-//     });
-
-// });
 
 
 
@@ -508,7 +482,6 @@ $(document).ready(function() {
 
 // Hide the extra content initially, using JS so that if JS is disabled, no problemo:
 $(document).ready(function() {
-
     $('.read-more-content').addClass('hide_content');
     $('.read-more-show, .read-more-hide').removeClass('hide_content');
 

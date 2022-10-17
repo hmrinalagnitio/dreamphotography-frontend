@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\auth\{
+use App\Http\Controllers\Auth\{
     LoginController,
     RegisterController,
     };
@@ -44,7 +44,7 @@ Route::post('/checkEmail',[RegisterController::class, 'check'])->name('checkEmai
 Route::post('/watch/{user_id}',[HomeController::class, 'addwatch'])->name('watch');
 // for load more
 Route::get('/',[HomeController::class,'index'])->name('home');
-Route::post('/loadmore', [HomeController::class, 'load_data'])->name('loadmore.load_data');
+Route::post('/loadmore', [HomeController::class, 'load_data'])->name('loadmore');
 
 Route::post('/contestListSorting',[HomeController::class, 'contestListSorting'])->name('contestListSorting');
 // for View details page 

@@ -8,7 +8,7 @@
             <label>Sort By</label>
             <div class="select_box">
                 <select name="sort" id="sort">
-                    <option value="newdesc">Newest First</option>
+                    <option value="NEWDESC">Newest First</option>
                     <option value="ASC">Price -- Low to High</option>
                     <option value="DESC">Price -- High to Low</option>
 
@@ -38,11 +38,12 @@
         load_data('', _token);
         function load_data(id="", _token){
                 $.ajax({
-                    url:"{{route('loadmore.load_data')}}",
+                    url:"{{route('loadmore')}}",
                     method: "POST",
                     data: {id: id, _token:_token},
                     success: function(data){
                         $('#load_more_button').remove();
+                        
                         $('#post_data').append(data);
 
                     }
@@ -51,6 +52,7 @@
 
         $(document).on('click', '#load_more_button', function(){
             var id = $(this).data('id');
+
             $('#load_more_button').html('<b>Loading ..</b>');
             load_data(id, _token);
 
@@ -63,10 +65,8 @@ $(document).ready(function() {
 
 $(document).on('change', '#sort', function() {
     var getname = $('#sort').val();
-
     var _token = $('input[name="_token"]').val();
     load_data( getname, _token);
-
     function load_data( getname, _token) {
         $.ajax({
             url: "/contestListSorting",
