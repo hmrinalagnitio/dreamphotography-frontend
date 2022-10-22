@@ -61,27 +61,29 @@
 
 
 // for contest list sorting 
-$(document).ready(function() {
+$(document).ready(function() {  
+   
+    $(document).on('change', '#sort', function() {
+            var getname = $('#sort').val();
+            var _token = $('input[name="_token"]').val();
+            load_data( getname, _token);
+            function load_data( getname, _token) {
+                $.ajax({
+                    url: "/contestListSorting",
+                    method: "POST",
+                    data: { getname: getname, _token: _token },
+                    success: function(data) {
+                        $('.load_more_button').remove();
+                        $('#post_data').html(data);
 
-$(document).on('change', '#sort', function() {
-    var getname = $('#sort').val();
-    var _token = $('input[name="_token"]').val();
-    load_data( getname, _token);
-    function load_data( getname, _token) {
-        $.ajax({
-            url: "/contestListSorting",
-            method: "POST",
-            data: { getname: getname, _token: _token },
-            success: function(data) {
-                $('.load_more_button').remove();
-                $('#post_data').html(data);
-
+                    }
+                });
             }
-        });
-    }
+        
 
+ 
 
-});
+    });
 });
 
 

@@ -19,12 +19,9 @@ class ImageUploadController extends Controller
     public function index(Request $request)
     {
         // 
-        $contest_id = $request->contest_id;
+        $id = $request->con_id;
         $user_id = Auth::id();
-        $contest_image_list = DB::table('contest_categories')->where('contest_id', $contest_id)->get();
-       
-   
-        
+        $contest_image_list = DB::table('contest_categories')->where('contest_unique_id', $id)->get();
         return view('contest.imageUpload', ['contest_image_list'=>$contest_image_list]);
         
     }
@@ -38,12 +35,13 @@ class ImageUploadController extends Controller
     {
         //
         $contest_name = $request->contest_name;
+        print_r($contest_name); exit();
+        $contest_unique_id = $request->id;
         $cat_name = $request->category;
         $img_no = $request->img_no;
         $con_id = $request->con_id; 
         $user_id = Auth::id();
     
-
         $validator = Validator::make($request->all(),[
             'title' => 'required|regex:/^[a-zA-Z]+$/u',
             'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
@@ -55,16 +53,15 @@ class ImageUploadController extends Controller
             $image = $request->file('image'); 
             $ext = $image->extension();
         	$image_name = time().'.'.$ext;
-			
-        	
         	$image->storeAs("public/"."media/"."uploadimage/".$contest_name.'/'.$user_id.'/'.$con_id.'/'.$cat_name.'/'.$img_no.'/',$image_name); //Pass the date and time folder name
             $image_path = ($contest_name.'/'.$user_id.'/'.$con_id.'/'.$cat_name.'/'.$img_no.'/'.$image_name);
-           
             $title = $request->title;
-            $query = DB::table('contest_images')->insert(
+
+            $query = DB::table('contest_image_uploads')->insert(
                 [
                     'title' => $title,
                     'user_id' => $user_id,
+                    'contest_unique_id'=> $contest_unique_id,
                     'contest_id' => $con_id,
                     'category_name' => $cat_name,
                     'img_no' => $img_no,
@@ -75,9 +72,7 @@ class ImageUploadController extends Controller
                 ]
             );
             if($query){
-                
                 return redirect()->route('imgUploadSuccess');
-            
 
             }else{
                 echo "failed";

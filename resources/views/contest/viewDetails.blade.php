@@ -45,7 +45,7 @@
           </ul>
 
         
-          <a href="{{route('imageupload',['contest_id'=>$contest_data->contest_id])}}" class="btn-submit">Submit Photo</a>
+          <a href="{{ url('imageupload/'.$contest_data->id) }}" class="btn-submit">Submit Photo</a>
         </div>
       </div>
     </div>

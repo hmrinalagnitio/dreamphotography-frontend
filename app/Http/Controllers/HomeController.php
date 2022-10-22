@@ -32,8 +32,7 @@ class HomeController extends Controller
     // for load more 
 
     public function load_data(Request $request){
-        $getname = $request->getname;
-      
+       
         
         // if($request->ajax()){
             // if($request->id > 0){
@@ -53,65 +52,61 @@ class HomeController extends Controller
             // }
 
 
-
         $getSortName = $request->getname;
+   
+
         if($request->id > 0){
 
-        
             if($getSortName == 'DESC'){
+                
                 $data = DB::table('contest_sorting_prize')
                     ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
                     ->select('contest_sorting_prize.*', 'contests.*')
                     ->orderBy('contest_sorting_prize.contest_high_prize', 'desc')
-                    // ->paginate(3);
                     ->where('contest_sort_id', '<', $request->id)
-                    ->limit(3)
-                    ->get();
-                    
+                    ->paginate(3);
+                    // ->limit(3)
+                    // ->get();
+                
 
             }elseif($getSortName == 'ASC'){
                 $data = DB::table('contest_sorting_prize')
-                ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
-                ->select('contest_sorting_prize.*', 'contests.*')
-                ->orderBy('contest_sorting_prize.contest_high_prize', 'asc')
-                // ->paginate(3);
-                ->where('contest_sort_id', '<', $request->id)
-                ->limit(3)
-                ->get();
+                    ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
+                    ->select('contest_sorting_prize.*', 'contests.*')
+                    ->orderBy('contest_sorting_prize.contest_high_prize', 'asc')
+                    ->where('contest_sort_id', '<', $request->id)
+                    ->paginate(3);
+               
             }elseif($getSortName == 'NEWDESC'){
                 $data = DB::table('contest_sorting_prize')
                     ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
                     ->select('contest_sorting_prize.*', 'contests.*')
                     ->orderBy('contest_sorting_prize.contest_sort_id', 'desc')
-                    // ->paginate(3);
                     ->where('contest_sort_id', '<', $request->id)
-                    ->limit(3)
-                    ->get();
-                    // $print_r($data); 
+                    ->paginate(3);
             }else{
+               
                 $data = DB::table('contest_sorting_prize')
                 ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
                 ->select('contest_sorting_prize.*', 'contests.*')
                 ->orderBy('contest_sorting_prize.contest_sort_id', 'desc')
-                // ->paginate(3);
-                ->where('contest_sort_id', '<', $request->id)
-                ->limit(3)
-                ->get();
-           
+                // ->where('contest_sort_id', '<', $request->id)
+                ->paginate(3);
             }
-    }else{
+    }
+    else{
         $data = DB::table('contest_sorting_prize')
-            ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
-            ->select('contest_sorting_prize.*', 'contests.*')
-            ->orderBy('contest_sorting_prize.contest_sort_id', 'desc')
-            // ->paginate(3);
-            ->limit(3)
-            ->get();
+                ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
+                ->select('contest_sorting_prize.*', 'contests.*')
+                ->orderBy('contest_sorting_prize.contest_sort_id', 'desc')
+                ->paginate(3);
+                
     }
             $output = '';
             $last_id = ''; 
             if(!$data->isEmpty()){
                 foreach($data as $row){
+                  
                     if(strlen($row->description_one) > 150){
                        $description = substr($row->description_one,0,150);
                        $post_description = substr($row->description_one,150,strlen($row->description_one));
@@ -129,7 +124,7 @@ class HomeController extends Controller
                     $end_days = $now->diffInDays($cDate );
                     $end_hours = $now->diffInHours($cHours);
                     // for authentication check 
-                    $countWatchlist = 0 ;
+                    $countWatchlist = 0;
                     if(Auth::check()){
                         $countWatchlist =WacthList::countWatchlist($row->contest_id);        
                     }
@@ -138,6 +133,7 @@ class HomeController extends Controller
                     }else{
                     $w = 'Watch';
                     }
+
                     $output .= '
                     <div class="load-more contemt--wrapper">
                         <div class="listing-wrap">
@@ -146,7 +142,7 @@ class HomeController extends Controller
                             <div class="listing-design__price">
                                 <div class="ribbon__fold"></div>
                                <div class="ribbon__text">
-                                $ '.$row->contest_high_prize.'
+                                $'.$row->contest_high_prize.'
                               </div>
                             </div>
                         </div>
@@ -163,7 +159,7 @@ class HomeController extends Controller
                                    </div>
                                    <br>
                                    <div class="participate">
-                                    <a href="'. route('viewdetails',['contest_id'=>$row->contest_id]) .'"
+                                    <a href="'. route('viewdetails',['id'=>$row->id]) .'"
                                         class="btn-participate-now">Participate Now</a>
                                    </div>
                                 </div>
@@ -197,16 +193,20 @@ class HomeController extends Controller
                   </div>        
                 </div>
                  ';
-                    $last_id = $row->contest_sort_id; 
+                    // $last_id = $row->contest_sort_id; 
+                    $last_id = $row->id;
+                    // $last_id = $count;
+                    //echo $last_id;
                     
                 }
                
                 $output .= '
-               
+                
                  <div id="load_more" class="btn__seeMore">
                         <button type="button" name="load_more_button"  
                      data-id="'.$last_id.'" id="load_more_button"><i class="fa fa-spinner" aria-hidden="true"></i> Show More</button>
                     </div>
+                   
                 ';
 
             }else{
@@ -247,42 +247,47 @@ class HomeController extends Controller
  
 
     public function contestListSorting(Request $request){
-
+        
         $getSortName = $request->getname;
         if($getSortName == 'DESC'){
             $data = DB::table('contest_sorting_prize')
                 ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
                 ->select('contest_sorting_prize.*', 'contests.*')
                 ->orderBy('contest_sorting_prize.contest_high_prize', 'desc')
-                ->limit(3)
-                ->get();
+                ->paginate(3);
+                // ->limit(3)
+                // ->get();
         }elseif($getSortName == 'ASC'){
             $data = DB::table('contest_sorting_prize')
             ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
             ->select('contest_sorting_prize.*', 'contests.*')
             ->orderBy('contest_sorting_prize.contest_high_prize', 'asc')
-            ->limit(3)
-            ->get();
+            ->paginate(3);
+            //  ->limit(3)
+            // ->get();
         }elseif($getSortName == 'NEWDESC'){
             $data = DB::table('contest_sorting_prize')
                 ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
                 ->select('contest_sorting_prize.*', 'contests.*')
                 ->orderBy('contest_sorting_prize.contest_sort_id', 'desc')
-                ->limit(3)
-                ->get();
+                ->paginate(3);
+                // ->limit(3)
+                // ->get();
         }else{
             $data = DB::table('contest_sorting_prize')
             ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
             ->select('contest_sorting_prize.*', 'contests.*')
             ->orderBy('contest_sorting_prize.contest_sort_id', 'desc')
-            ->limit(3)
-            ->get();
+            ->paginate();
+            // ->limit(3)
+            // ->get();
         }
 
         $output = '';
         if(!$data->isEmpty()){
+            $count = 0; 
             foreach($data as $row){
-              
+                $count +=1;
                 if(strlen($row->description_one) > 150){
                    $description = substr($row->description_one,0,150);
                    $post_description = substr($row->description_one,150,strlen($row->description_one));
@@ -332,7 +337,7 @@ class HomeController extends Controller
                                </div>
                                <br>
                                <div class="participate">
-                                <a href="'. route('viewdetails',['contest_id'=>$row->contest_id]) .'"
+                                <a href="'. url('viewdetails/'.$row->id) .'"
                                     class="btn-participate-now">Participate Now</a>
                                </div>
                             </div>
@@ -366,7 +371,9 @@ class HomeController extends Controller
               </div>        
             </div>
              ';
-                $last_id = $row->id; 
+                $last_id = $row->id;
+                // $last_id = $count;
+                echo $last_id;
             }
             $output .= '
            
@@ -389,6 +396,8 @@ class HomeController extends Controller
       
      
     }
+
+  
 
 
 

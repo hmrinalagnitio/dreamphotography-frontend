@@ -47,12 +47,13 @@ Route::get('/',[HomeController::class,'index'])->name('home');
 Route::post('/loadmore', [HomeController::class, 'load_data'])->name('loadmore');
 
 Route::post('/contestListSorting',[HomeController::class, 'contestListSorting'])->name('contestListSorting');
+
 // for View details page 
-Route::get('/viewdetails/{contest_id}',[ViewDetailsController::class, 'index'])->name('viewdetails');
+Route::get('/viewdetails/{id}',[ViewDetailsController::class, 'index'])->name('viewdetails');
 
 // for image Upload page 
 Route::group(['middleware'=>['CustomAuth']], function(){
-    Route::get('/imageupload',[ImageUploadController::class, 'index'])->name('imageupload');
+    Route::get('/imageupload/{con_id}',[ImageUploadController::class, 'index'])->name('imageupload');
     Route::post('/insertimage',[ImageUploadController::class, 'create'])->name('insertimage');
     Route::get('/imgUploadSuccess', [ImageUploadSuccessController::class, 'index'])->name('imgUploadSuccess');
 });

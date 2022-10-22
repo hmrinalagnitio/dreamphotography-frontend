@@ -181,6 +181,7 @@ $(document).ready(function() {
 
 // login submit btn click 
 $(document).ready(function() {
+    var current_url = $('.hidden_url').val();
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -203,7 +204,8 @@ $(document).ready(function() {
                     $('#loginerror').text(respons.error);
                 }
                 if (respons.success) {
-                    location.href = "/";
+
+                    location.href = current_url;
                 }
             }
         });

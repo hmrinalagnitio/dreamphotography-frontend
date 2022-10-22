@@ -4108,3 +4108,11 @@ body {
 .hide_content {
     display: none;
 }
+
+
+/* for image upload page pau noe button  */
+
+.payment_btn {
+    text-align: right;
+    padding: 5px;
+}
