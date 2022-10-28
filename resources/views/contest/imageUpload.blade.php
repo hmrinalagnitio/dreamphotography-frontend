@@ -84,31 +84,43 @@
                             <button class="btn-img-upload apply4job">Upload Image</button>
                             <div class="img-title jobDetail">
                                 <h3>Title</h3>
-                                <form action="{{ route('insertimage') }}" id="upload-image-form"
-                                    method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="contest_unique_id" id="contest_unique_id" value="{{$image_list->contest_unique_id}}">
+                                <input type="hidden" name="contest_id" id="contest_id" value="{{$image_list->contest_id}}">
+                                <input type="hidden" name="number_of_image" id="number_of_image{{$uid}}" value="{{$image_list->number_of_image}}">
+                                <input type="hidden" name="contest_cat_name" id="contest_cat_name{{$uid}}" value="{{$image_list->contest_cat_name}}">
+                                <input type="hidden" name="contest_cat_slug" id="contest_cat_slug{{$uid}}" value="{{$image_list->contest_cat_slug}}">
+                                <input type="hidden" name="imageShow_id" id="imageShow_id" value="{{$uid}}">
+
+                                <form action="" id="upload-image-form" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <input type="text" name="title" placeholder="Title" id="title{{ $uid }}"
                                         class="AlphabetsOnly">
                                     <input type="file" name="image" id="imageUpload{{ $uid }}" class="file-upload" />
                                     <span class="text-danger" id="imageChecked{{ $uid }}"> </span>
-                            <button type="submit" class="btn-img-upload img-button{{ $uid }}"
+                            <button type="submit" class="btn-img-upload img-button{{ $uid }}" data-id="{{$uid}}"
                                 id="upload_img">Upload</button>
                             </form>
                         </div>
-
+                       <?php
+                    //    echo "<pre>"; 
+                  
+                        foreach ($fetch_image as $key => $value) {
+                            // print_r($value->imageShow_id); 
+                            // echo "<br>"; 
+                        }
+                    //    exit(); 
+                       ?>
                 </div>
                 <!---itemlist--->
                 <script>
                     $(document).ready(function () {
                         //name field 
-                    
                         var title = $("#title{{ $uid }}").val();
                         var image_id = $("#imagePreview{{ $uid }}").val();  
-
                         if (title == '' && image_id == '') {
                             $(".img-button{{ $uid }}").hide();
                         }
-                        //image file 
+                        //image file 00000
                         $('#image-msg{{ $uid }}').hide();
                         $('#size-msg{{ $uid }}').hide();
                         $("#imageUpload{{ $uid }}").change(function (e) {
@@ -119,7 +131,6 @@
                             var extension = $(this).val().split('.').pop().toLowerCase();
                             var validFileExtensions = ['jpeg', 'jpg', 'PNG', 'png', 'svg'];
                             if (numb >= 2) {
-
                                 $('#imageChecked{{ $uid }}').show();
                                 $("#imageChecked{{ $uid }}").addClass("border-error");
                                 $("#imageChecked{{ $uid }}").html(
@@ -137,14 +148,59 @@
                                 $('#imageChecked{{ $uid }}').hide();
                                 $(".img-button{{ $uid }}").show();
                             }
+                            
                             $("#imagePreview{{ $uid }}").attr('src', url);
-                            // $('.no_image').hide();
-                            // let fd = new FormData();
-                            // fd.append('picture',file);
                         });
-
                         // for image upload 
+                    });
 
+                     // ===========================================
+                    //      IMAGE UPLOAD and fetch from database
+                    // ===========================================
+
+                    $(document).ready(function() {
+                       
+                        var _token = $('input[name="_token"]').val();
+                    
+                        $(document).on('click', '.img-button{{$uid}}', function(e) {
+                            e.preventDefault();
+                            var imageShow_id =  $(this).data("id");
+                            var contest_unique_id = $('#contest_unique_id').val();
+                            var contest_id = $('#contest_id').val();
+                            var category_name = $('#contest_cat_name{{$uid}}').val();
+                            var image_no = $('#number_of_image{{$uid}}').val();
+                            var fileName  = $('#imageUpload{{$uid}}').val();
+                            var fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1); 
+                            var file_data=$("#imageUpload{{$uid}}").prop("files")[0];
+                            var title = $('#title{{$uid}}').val();
+                     
+                            fd = new FormData();
+                            fd.append('_token', _token);
+                            fd.append('title', title)
+                            fd.append('file', file_data);
+                            fd.append('imageShow_id',imageShow_id);
+                            fd.append('contest_unique_id',contest_unique_id);
+                            fd.append('contest_id',contest_id);
+                            fd.append('category_name',category_name);
+                            fd.append('image_no',image_no);
+                    
+
+                            $.ajax({
+                                url:'/insertimage',
+                                type:'post',
+                                datatype:'script',
+                                cache:false,
+                                data:fd,
+                                contentType:false,
+                                processData:false,
+                                success: function(res){
+                                   location.reload();
+
+                                   
+                                }
+                            });
+                        });
+                       
                     });
 
                 </script>

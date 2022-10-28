@@ -21,8 +21,15 @@ class ImageUploadController extends Controller
         // 
         $id = $request->con_id;
         $user_id = Auth::id();
+
+   
+        $fetch_image = DB::table('contest_image_uploads')->where('contest_unique_id', $id)->get();
+       
         $contest_image_list = DB::table('contest_categories')->where('contest_unique_id', $id)->get();
-        return view('contest.imageUpload', ['contest_image_list'=>$contest_image_list]);
+        return view('contest.imageUpload', [
+            'contest_image_list'=>$contest_image_list,
+            'fetch_image' =>$fetch_image, 
+        ]);
         
     }
 
@@ -34,56 +41,13 @@ class ImageUploadController extends Controller
     public function create(Request $request)
     {
         //
-        $contest_name = $request->contest_name;
-        print_r($contest_name); exit();
-        $contest_unique_id = $request->id;
-        $cat_name = $request->category;
-        $img_no = $request->img_no;
-        $con_id = $request->con_id; 
-        $user_id = Auth::id();
-    
-        $validator = Validator::make($request->all(),[
-            'title' => 'required|regex:/^[a-zA-Z]+$/u',
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-        ]);
-        if($validator->fails()) {
-            return back()->withErrors($validator);
-
-        }else{
-            $image = $request->file('image'); 
-            $ext = $image->extension();
-        	$image_name = time().'.'.$ext;
-        	$image->storeAs("public/"."media/"."uploadimage/".$contest_name.'/'.$user_id.'/'.$con_id.'/'.$cat_name.'/'.$img_no.'/',$image_name); //Pass the date and time folder name
-            $image_path = ($contest_name.'/'.$user_id.'/'.$con_id.'/'.$cat_name.'/'.$img_no.'/'.$image_name);
-            $title = $request->title;
-
-            $query = DB::table('contest_image_uploads')->insert(
-                [
-                    'title' => $title,
-                    'user_id' => $user_id,
-                    'contest_unique_id'=> $contest_unique_id,
-                    'contest_id' => $con_id,
-                    'category_name' => $cat_name,
-                    'img_no' => $img_no,
-                    'path' => $image_path,
-                    "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
-                    "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
-                    
-                ]
-            );
-            if($query){
-                return redirect()->route('imgUploadSuccess');
-
-            }else{
-                echo "failed";
-            }
-        }
-
-       
+        $contest_id = $request->contest_id;
       
-
+        $user_id = Auth::id();
+        $contest_image_list = DB::table('contest_categories')->where('contest_unique_id', $contest_id)->get();
+       
+        return view('contest.imageUpload', ['contest_image_list'=>$contest_image_list]);
         
-
       
 
     }
@@ -97,6 +61,41 @@ class ImageUploadController extends Controller
     public function store(Request $request)
     {
         //
+           
+            
+
+        $contest_name = $request->contest_name;
+        $imageShow_id = $request->imageShow_id;
+        $contest_unique_id = $request->contest_unique_id;
+        $contest_id = $request->contest_id;
+        $category_name = $request->category_name;
+        $image_no = $request->image_no; 
+        $user_id = Auth::id();
+        $title = $request->title;
+
+        $file = $request->file('file');
+        $filename = time().'_'.$file->getClientOriginalName();
+        $file->storeAs("public/"."media/"."uploadimage/".$contest_name.'/'.$user_id.'/'.$contest_id.'/'.$category_name.'/'.$image_no.'/',$filename); //Pass the date and time folder name
+        $image_path = ($contest_name.'/'.$user_id.'/'.$contest_id.'/'.$category_name.'/'.$image_no.'/'.$filename);
+        $q =  DB::table('contest_image_uploads')->insert(
+            [
+                'contest_unique_id'=> $contest_unique_id,
+                'user_id'=> $user_id,
+                'image_path'=> $image_path,
+                'contest_id' => $contest_id,
+                'category_name' => $category_name,
+                'image_no' => $image_no,
+                'imageShow_id' => $imageShow_id,
+                'title' => $title,
+                "created_at" =>  \Carbon\Carbon::now(), # new \Datetime()
+                "updated_at" => \Carbon\Carbon::now(),  # new \Datetime()
+                        
+              
+            ]);
+
+            return redirect(route('imageupload')); 
+
+      
     }
 
     /**
@@ -105,9 +104,12 @@ class ImageUploadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request )
     {
         //
+       
+
+    
     }
 
     /**

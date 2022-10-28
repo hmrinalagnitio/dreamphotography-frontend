@@ -539,76 +539,19 @@ $(document).ready(function() {
     })
 
 
-
-
-
 });
 
-
-
-
-
-
-// ===========================================
-//      IMAGE UPLOAD VALIDATION WITH TITLE
-// ===========================================
-
+// for fetch all uploaded image
+// fetch upload image 
 // $(document).ready(function() {
+//     var contest_unique_id = $('#contest_unique_id').val();
 
-
-//     $('#image').on('change', function(evt) {
-//         var numb = $(this)[0].files[0].size / 1024 / 1024;
-//         numb = numb.toFixed(2);
-
-//         var hiddenImageid = $('#image_val').val();
-
-//         var image_url = URL.createObjectURL(evt.target.files[0]);
-//         var imageDiv = document.getElementById('preview');
-//         var newimg = document.createElement('img');
-//         var previewImage = newimg.append('hiddenImageid');
-//         alert(previewImage);
-//         var imgsize = this.files[0].size;
-//         var fuData = document.getElementById('image');
-//         var FileUploadPathData = fuData.value;
-
-//         var Extension = FileUploadPathData.substring(FileUploadPathData.lastIndexOf('.') + 1)
-//             .toLowerCase();
-
-//         // size  validation start
-//         if (numb >= 2) {
-//             alert(imgsize); 
-//             $('#imageChecked').show();
-//             $("#imageChecked").addClass("border-error");
-//             $("#imageChecked").html("Please select image less then 2MB");
-//             $("button[type=submit]").prop('disabled', true);
-//         } else {
-//             $("button[type=submit]").prop('disabled', false);
-//             // extension validation start
-//             if (Extension == "gif" || Extension == "png" || Extension == "jpeg" || Extension ==
-//                 "jpg") {
-//                 if (fuData.files && fuData.files[0]) {
-//                     imageDiv.innerHTML = '';
-//                     newimg.src = image_url;
-
-//                     imageDiv.appendChild(newimg);
-//                     // $('#preview_image{{$uid}}').show();
-//                     $("#imageChecked").hide();
-//                     $('#default_img').hide();
-//                     $("#btn_close").show();
-//                     $("#btn_close").click(function() {
-//                         $("#preview").hide();
-//                         $("#btn_close").hide();
-//                         location.reload();
-//                     });
-//                 }
-
-//             } else {
-//                 $("#imageChecked").show();
-//                 $("#imageChecked").addClass("border-error");
-//                 $("#imageChecked").html("File types must be GIF, PNG, JPG or JPEG");
-//             } //  extension validation end
-
-//         } //size  validation end
-
+//     $.ajax({
+//         url: '/fetchimage/' + contest_unique_id,
+//         type: 'get',
+//         success: function(res) {
+//             console.log(res);
+//         }
 //     });
-// });cons=
+
+// });

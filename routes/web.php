@@ -54,7 +54,9 @@ Route::get('/viewdetails/{id}',[ViewDetailsController::class, 'index'])->name('v
 // for image Upload page 
 Route::group(['middleware'=>['CustomAuth']], function(){
     Route::get('/imageupload/{con_id}',[ImageUploadController::class, 'index'])->name('imageupload');
-    Route::post('/insertimage',[ImageUploadController::class, 'create'])->name('insertimage');
+    Route::get('/uploadimage',[ImageUploadController::class, 'create'])->name('uploadimage');
+    Route::post('/insertimage',[ImageUploadController::class, 'store'])->name('insertimage');
+    Route::get('/fetchimage/{id}',[ImageUploadController::class, 'index'])->name('fetchimage');
     Route::get('/imgUploadSuccess', [ImageUploadSuccessController::class, 'index'])->name('imgUploadSuccess');
 });
 
