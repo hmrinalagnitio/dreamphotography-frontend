@@ -18,6 +18,9 @@ use App\Http\Controllers\contest\{
 //     return view('welcome');
 // }); 
 
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
+});
 Auth::routes();
 
 // Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -56,7 +59,6 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::get('/imageupload/{con_id}',[ImageUploadController::class, 'index'])->name('imageupload');
     Route::get('/uploadimage',[ImageUploadController::class, 'create'])->name('uploadimage');
     Route::post('/insertimage',[ImageUploadController::class, 'store'])->name('insertimage');
-    Route::get('/fetchimage/{id}',[ImageUploadController::class, 'index'])->name('fetchimage');
     Route::get('/imgUploadSuccess', [ImageUploadSuccessController::class, 'index'])->name('imgUploadSuccess');
 });
 

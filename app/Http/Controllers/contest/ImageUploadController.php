@@ -21,15 +21,8 @@ class ImageUploadController extends Controller
         // 
         $id = $request->con_id;
         $user_id = Auth::id();
-
-   
-        $fetch_image = DB::table('contest_image_uploads')->where('contest_unique_id', $id)->get();
-       
         $contest_image_list = DB::table('contest_categories')->where('contest_unique_id', $id)->get();
-        return view('contest.imageUpload', [
-            'contest_image_list'=>$contest_image_list,
-            'fetch_image' =>$fetch_image, 
-        ]);
+        return view('contest.imageUpload', ['contest_image_list'=>$contest_image_list]);
         
     }
 
@@ -41,6 +34,7 @@ class ImageUploadController extends Controller
     public function create(Request $request)
     {
         //
+		
         $contest_id = $request->contest_id;
       
         $user_id = Auth::id();
@@ -93,8 +87,6 @@ class ImageUploadController extends Controller
               
             ]);
 
-            return redirect(route('imageupload')); 
-
       
     }
 
@@ -104,12 +96,9 @@ class ImageUploadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request )
+    public function show($id)
     {
         //
-       
-
-    
     }
 
     /**
