@@ -7,7 +7,7 @@
         <img src="{{ asset('') }}assets/images/logo.png" alt="">
     </div>
     <div class="text-center mt-4 name">
-        Login Now
+        Login Now 
     </div>
     <div class="loginerror" id="loginerror"></div>
     <form action="" method="post" class="p-3 mt-3" id="login_form">
@@ -26,7 +26,6 @@
         <div class="error_email">
 
         </div>
-
         <div class="form-field d-flex align-items-center">
             <span class="fa fa-key"></span>
             <input type="password" name="password" id="password" placeholder="Password">

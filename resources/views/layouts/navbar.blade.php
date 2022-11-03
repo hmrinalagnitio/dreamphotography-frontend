@@ -1,5 +1,6 @@
 <header class="page-header">
-    <input type="hidden" id="hidden_url" class="hidden_url" value=" {{url()->previous()}} ">
+    <input type="hidden" id="hidden_url" class="hidden_url" value="{{ redirect()->back()->getTargetUrl()}} ">
+   
     <div class="top-header-mobile">
          <!-- Right Side Of Navbar -->
          <ul class="navbar-nav ms-auto clearfix">

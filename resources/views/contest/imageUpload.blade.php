@@ -54,9 +54,11 @@
     </div>
 </section>
 <div class="payment">
-
+    @foreach($contest_image_list as $key => $image_list)
+    <?php $con_unique_id = $image_list->contest_unique_id; ?>
+    @endforeach
     <div class="payment_btn">
-        <button class="btn btn-primary">Pay Now</button>
+        <a href="{{route('make_payment', ['id'=>$con_unique_id])}}" class="btn btn-primary">Pay Now</a>
     </div>
 </div>
 
@@ -65,10 +67,7 @@
 @foreach($contest_image_list as $key => $image_list)
     @php
         $con_unique_id = $image_list->contest_unique_id;
-
-
         $contest_cat_slug_name = $image_list->contest_cat_name;
-
         $i = 0;
     @endphp
     <section class="images-upload-section">
@@ -87,15 +86,14 @@
                         <div class="col-md-3">
                             <div class="upload-img">
                                 <?php
-                             $user_id = Auth::id(); 
-                          
-                        $img_data = DB::table('contest_image_uploads')->where('user_id', $user_id)->where('contest_unique_id', $con_unique_id)->where('imageShow_id', $uid)->get();
-                             $img_id = '';
-                                   foreach ($img_data as $data) {
-                                        $img_path = $data->image_path;
-                                        $img_id = $data->imageShow_id; 
-                                       
-                                   }
+                            $user_id = Auth::id(); 
+                            $img_data = DB::table('contest_image_uploads')->where('user_id', $user_id)->where('contest_unique_id', $con_unique_id)->where('imageShow_id', $uid)->get();
+                            $img_id = '';
+                            foreach ($img_data as $data) {
+                                $img_path = $data->image_path;
+                                $img_id = $data->imageShow_id; 
+                                
+                            }
                                  
                                 ?>
 
@@ -124,7 +122,6 @@
                                 <input type="hidden" name="contest_cat_slug" id="contest_cat_slug{{ $uid }}"
                                     value="{{ $image_list->contest_cat_slug }}">
                                 <input type="hidden" name="imageShow_id" id="imageShow_id" value="{{ $uid }}">
-
                                 <form action="" id="upload-image-form" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <input type="text" name="title" placeholder="Title" id="title{{ $uid }}"
@@ -185,9 +182,7 @@
                             // ===========================================
 
                             $(document).ready(function () {
-
                                 var _token = $('input[name="_token"]').val();
-
                                 $(document).on('click', '.img-button{{ $uid }}', function (e) {
                                     e.preventDefault();
                                     var imageShow_id = $(this).data("id");
@@ -210,7 +205,6 @@
                                     fd.append('contest_id', contest_id);
                                     fd.append('category_name', category_name);
                                     fd.append('image_no', image_no);
-
 
                                     $.ajax({
                                         url: '/insertimage/',

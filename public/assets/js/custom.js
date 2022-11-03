@@ -92,8 +92,6 @@ $(".responsive-tabs").responsiveTabs({
 
 // Date Countdown 
 
-
-
 // Character Text Limit
 
 $(".text-box p").text(function(index, currentText) {
@@ -105,47 +103,37 @@ $(".text-box p").text(function(index, currentText) {
     }
 });
 
-
 // Load More
 $(document).ready(function() {
     $(".load-more").slice(0, 3).show();
     $("#seeMore").click(function(e) {
         e.preventDefault();
         $(".load-more:hidden").slice(0, 1).fadeIn("slow");
-
         if ($(".load-more:hidden").length == 0) {
             $("#seeMore").fadeOut("slow");
         }
     });
 })
 
-
 // Load More
 $(document).ready(function() {
     $("#qr-code").hide();
-
     $("#4").click(function() {
-
         $("#qr-code").fadeToggle("slow");
-
-
     });
 })
 
 $(document).ready(function() {
     $("#3,#2,#1").click(function() {
         $("#qr-code").fadeOut("slow");
-
-
     });
 })
-
 
 // for email validation
 
 //============================
 // for login page
-//===============================
+//============================
 
 $(document).ready(function() {
     $("#login_btn").attr("disabled", true);
@@ -179,19 +167,24 @@ $(document).ready(function() {
 
 });
 
+
 // login submit btn click 
 $(document).ready(function() {
     var current_url = $('.hidden_url').val();
+    var next_hidden_url = $('.next_hidden_url').val();
+    var privous_url = $('.hidden_url').val();
+    var btn_url = $(this).data("id");
+    // alert(btn_url);
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
     $("#login_btn").on('click', function(e) {
         e.preventDefault();
         var email = $('#email').val();
         var password = $('#password').val();
-
         $.ajax({
             url: '/create',
             type: "post",
@@ -204,7 +197,6 @@ $(document).ready(function() {
                     $('#loginerror').text(respons.error);
                 }
                 if (respons.success) {
-
                     location.href = current_url;
                 }
             }
@@ -216,12 +208,13 @@ $(document).ready(function() {
 
 
 
+
+
+
 // ========================
 // for resigter page
 // ==========================
 $(document).ready(function() {
-
-
     $("#register_btn").attr("disabled", true);
     // name validation
     $('#name').keyup(function() {
@@ -229,7 +222,6 @@ $(document).ready(function() {
         var email = $('#email').val();
         var password = $('#password').val();
         var c_password = $('#c_password').val();
-
         if (name == '' || email == '' || password == '' || c_password == '') {
             $("#register_btn").attr("disabled", true);
         } else {

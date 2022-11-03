@@ -11,7 +11,6 @@
                   <div class="link-page">
                       <ul>
                           <li><a href="{{route('home')}}">Home</a> ></li>
-                       
                       </ul>
                   </div>
               </div>
@@ -21,8 +20,7 @@
 </section>
 
 @foreach($contest_query as $contest_data)
-        
-      
+           
 <section class="view-details__section">
   <div class="container">
     <div class="row">
@@ -32,7 +30,7 @@
           <a href="javascript:void();" class="btn__open">Open</a>
         </div>
       </div>
-
+   
       <div class="col-lg-4 col-md-6">
         <div class="text-align-right">
           <h3 class="contest__id">Contests ID: <a href="#">{{$contest_data->contest_id}}</a></h3>              
@@ -43,9 +41,8 @@
             @endphp
             <li><img src="{{ asset('')}}/assets/images/Watch__icon.png" alt=""> Watch({{$q}})</li>
           </ul>
-
-        
-          <a href="{{ url('imageupload/'.$contest_data->id) }}" class="btn-submit">Submit Photo</a>
+          <a href="{{ url('imageupload/'.$contest_data->id) }}" data-id="{{url('viewdetails/'.$contest_data->id)}}" class="btn-submit">Submit Photo</a>
+          <input type="hidden" id="next_hidden_url" class="next_hidden_url" value=" {{url('imageupload/'.$contest_data->id)}} ">
         </div>
       </div>
     </div>
@@ -57,7 +54,6 @@
       <div class="col-md-12">
         <div class="submit-design__timeline">
           @php 
-
           $now =  \Carbon\Carbon::now();
           $end_date = $contest_data->closing_date;
           $end_time = $contest_data->closing_time;
@@ -65,9 +61,7 @@
           $cHours =  \Carbon\Carbon::parse($end_time);
           $end_days = $now->diffInDays($cDate );
           $end_hours = $now->diffInHours($cHours);
-
           @endphp
-     
           <img src="{{ asset('')}}/assets/images/timeline.png" alt=""> You have {{$end_days}} days,  {{$end_hours}} hour left to Submit Photo
         </div>
       </div>
@@ -146,9 +140,7 @@
                    
                 </div>
                     
-                      <a href="javascript:void(0)" class="banner-add">Banner</a>
-
-               
+              <a href="javascript:void(0)" class="banner-add">Banner</a>
             </div>
         </div>
     </div>

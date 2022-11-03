@@ -12,6 +12,14 @@ use App\Http\Controllers\contest\{
     ImageUploadSuccessController,
 };
 
+use App\Http\Controllers\payment\{
+    PaymentController,
+    RazorPayController,
+    PaypalController,
+
+
+ };
+
 
 
 // Route::get('/', function () {
@@ -60,7 +68,23 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::get('/uploadimage',[ImageUploadController::class, 'create'])->name('uploadimage');
     Route::post('/insertimage',[ImageUploadController::class, 'store'])->name('insertimage');
     Route::get('/imgUploadSuccess', [ImageUploadSuccessController::class, 'index'])->name('imgUploadSuccess');
+
+    // for payment page 
+    Route::get('/makePayment/{id}', [PaymentController::class, 'index'])->name('make_payment');
+
+    // for Razor Pay payment gateway integration 
+    Route::get('rpayment/{id}', [RazorPayController::class, 'index'])->name('rpayment'); 
+    Route::post('make-rpayment-order', [RazorPayController::class, 'store'])->name('make-rpayment'); 
+
+    // for paypal Payment gateway integration 
+    Route::get('paywithpaypal', [PaypalController::class, 'paywithpaypal'])->name('paywithpaypal'); 
+    Route::post('paypal', [PaypalController::class, 'postPaymentwithPaypal'])->name('paypal'); 
+    Route::get('status', [PaypalController::class, 'getPaymentStatus'])->name('status'); 
+
 });
+
+
+
 
 
 
