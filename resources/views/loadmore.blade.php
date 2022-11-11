@@ -11,7 +11,6 @@
                     <option value="NEWDESC">Newest First</option>
                     <option value="ASC">Price -- Low to High</option>
                     <option value="DESC">Price -- High to Low</option>
-
                 </select>
             </div>
         </div>
@@ -79,9 +78,6 @@ $(document).ready(function() {
                     }
                 });
             }
-        
-
- 
 
     });
 });

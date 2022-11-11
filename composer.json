@@ -11,7 +11,11 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.4"
+        "laravel/ui": "^3.4",
+        "league/omnipay": "^3.2",
+        "omnipay/paypal": "^3.0",
+        "paypal/rest-api-sdk-php": "^1.14",
+        "srmklive/paypal": "^3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -14,13 +14,15 @@ use App\Http\Controllers\contest\{
 
 use App\Http\Controllers\payment\{
     PaymentController,
-    RazorPayController,
     PaypalController,
-
 
  };
 
 
+
+ header('Access-Control-Allow-Origin: http://localhost:8080');
+ header('Access-Control-Allow-Headers: origin, x-requested-with, content-type');
+ header('Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS');
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -31,24 +33,21 @@ Route::get('/linkstorage', function () {
 });
 Auth::routes();
 
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// for my code
-// Route::get('/',[HomeController::class,'homepage'])->name('homepage');
+
+
 // for login page 
 Route::get('/login',[LoginController::class,'login'])->name('login');
 Route::post('/create',[LoginController::class, 'create'])->name('create');
 
 // for registetion page
-Route::get('/adduser',[RegisterController::class, 'index'])->name('register');
+
 Route::post('/createuser',[RegisterController::class, 'create'])->name('createuser');
 Route::get('/checkEmaildata',[RegisterController::class, 'check'])->name('checkEmaildata');
 Route::post('/checkEmail',[RegisterController::class, 'check'])->name('checkEmail');
 
 
-// for homepage 
 
-// Route::post('/home',[HomeController::class, 'homepage'])->name('homepagep');
 // for price filter list
 
 // for watching  
@@ -69,17 +68,14 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::post('/insertimage',[ImageUploadController::class, 'store'])->name('insertimage');
     Route::get('/imgUploadSuccess', [ImageUploadSuccessController::class, 'index'])->name('imgUploadSuccess');
 
-    // for payment page 
-    Route::get('/makePayment/{id}', [PaymentController::class, 'index'])->name('make_payment');
 
-    // for Razor Pay payment gateway integration 
-    Route::get('rpayment/{id}', [RazorPayController::class, 'index'])->name('rpayment'); 
-    Route::post('make-rpayment-order', [RazorPayController::class, 'store'])->name('make-rpayment'); 
+ 
+    // for paypal payment page 
+    Route::get('/payment/{id}', [PaymentController::class, 'index'])->name('payment'); 
+    Route::post('/makepaypal', [PaymentController::class, 'place_order'])->name('placeorder');
 
-    // for paypal Payment gateway integration 
-    Route::get('paywithpaypal', [PaypalController::class, 'paywithpaypal'])->name('paywithpaypal'); 
-    Route::post('paypal', [PaypalController::class, 'postPaymentwithPaypal'])->name('paypal'); 
-    Route::get('status', [PaypalController::class, 'getPaymentStatus'])->name('status'); 
+    
+    
 
 });
 

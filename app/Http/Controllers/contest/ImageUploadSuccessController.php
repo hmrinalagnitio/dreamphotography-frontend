@@ -45,9 +45,9 @@ class ImageUploadSuccessController extends Controller
         $data = DB::table('contest_images')->whereRaw('created_at IN (select MAX(created_at) FROM contest_images GROUP BY category_name)')->get();
       
 
-        echo "<pre>";
-        print_r($q);
-        exit(); 
+        // echo "<pre>";
+        // print_r($q);
+        // exit(); 
      
        
         

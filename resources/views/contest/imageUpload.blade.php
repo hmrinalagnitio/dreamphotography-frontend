@@ -58,7 +58,30 @@
     <?php $con_unique_id = $image_list->contest_unique_id; ?>
     @endforeach
     <div class="payment_btn">
-        <a href="{{route('make_payment', ['id'=>$con_unique_id])}}" class="btn btn-primary">Pay Now</a>
+        @php
+    
+        $user_id = Auth::id();
+      
+            $q = DB::table('contest_payments')->where('contest_unique_id', $con_unique_id)->get();
+                foreach ($q as  $value) {
+                    $p_user_id = $value->user_id;
+                    $paid_con_unique_id = $value->contest_unique_id;
+                    $payment_status = $value->payment_status;
+                } 
+                @endphp
+
+                @if($q->count() == 0)
+                <a href="{{route('payment', ['id'=>$con_unique_id])}}" class="btn btn-primary">Pay Now</a>
+                @else
+                    @if(($p_user_id == $user_id) && ($con_unique_id == $paid_con_unique_id))
+                        @if($payment_status == 'COMPLETED')
+                            <button class="btn btn-primary disabled"> Paid</button>
+                        @endif
+                    @else
+                        <a href="{{route('payment', ['id'=>$con_unique_id])}}" class="btn btn-primary">Pay Now</a>
+                    @endif
+                @endif
+          
     </div>
 </div>
 
