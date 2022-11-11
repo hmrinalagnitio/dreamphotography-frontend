@@ -124,8 +124,8 @@
                 </div>
                 <nav class="nav-primary">
                     <ul class="clearfix">
-                        <li><a href="my-account.html" class="active">My Account</a></li>
-                        <li><a href="contests-list.html">Contests List</a></li>
+                        <li><a href="my-account.html" >My Account</a></li>
+                        <li><a href="{{route('contestlist')}}" class="{{ request()->routeIs('contestlist') ? 'active' : '' }}">Contests List</a></li>
                         <li><a href="gallery.html">Gallery</a></li>
                         <li><a href="status.html">Status</a></li>
                         <li><a href="#">Results</a></li>

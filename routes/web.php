@@ -18,8 +18,6 @@ use App\Http\Controllers\payment\{
 
  };
 
-
-
  header('Access-Control-Allow-Origin: http://localhost:8080');
  header('Access-Control-Allow-Headers: origin, x-requested-with, content-type');
  header('Access-Control-Allow-Methods: PUT, GET, POST, DELETE, OPTIONS');
@@ -54,6 +52,8 @@ Route::post('/checkEmail',[RegisterController::class, 'check'])->name('checkEmai
 Route::post('/watch/{user_id}',[HomeController::class, 'addwatch'])->name('watch');
 // for load more
 Route::get('/',[HomeController::class,'index'])->name('home');
+Route::get('/contestlist',[HomeController::class,'index'])->name('contestlist');
+
 Route::post('/loadmore', [HomeController::class, 'load_data'])->name('loadmore');
 
 Route::post('/contestListSorting',[HomeController::class, 'contestListSorting'])->name('contestListSorting');
