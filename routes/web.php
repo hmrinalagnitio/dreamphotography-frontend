@@ -10,12 +10,12 @@ use App\Http\Controllers\contest\{
     ViewDetailsController,
     ImageUploadController,
     ImageUploadSuccessController,
+    GalleryController,
 };
 
 use App\Http\Controllers\payment\{
     PaymentController,
     PaypalController,
-
  };
 
  header('Access-Control-Allow-Origin: http://localhost:8080');
@@ -68,11 +68,14 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::post('/insertimage',[ImageUploadController::class, 'store'])->name('insertimage');
     Route::get('/imgUploadSuccess', [ImageUploadSuccessController::class, 'index'])->name('imgUploadSuccess');
 
-
- 
     // for paypal payment page 
     Route::get('/payment/{id}', [PaymentController::class, 'index'])->name('payment'); 
     Route::post('/makepaypal', [PaymentController::class, 'place_order'])->name('placeorder');
+
+    // gallery page 
+    Route::get('/mygallery', [GalleryController::class, 'index'])->name('mygallery');
+    // add to gallery button
+    Route::post('/addtogallery', [GalleryController::class, 'addToGallery'])->name('addtogallery');
 
     
     

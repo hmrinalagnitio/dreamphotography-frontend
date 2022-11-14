@@ -4116,3 +4116,16 @@ body {
     text-align: right;
     padding: 5px;
 }
+
+
+/* image add to gallery button  */
+
+.gallery-tooltip {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.upload-img {
+    position: relative;
+}

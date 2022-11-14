@@ -93,9 +93,16 @@
         $contest_cat_slug_name = $image_list->contest_cat_name;
         $i = 0;
     @endphp
+
+
+<div class="container">
+    
+
+    
     <section class="images-upload-section">
         <div class="container">
             <div class="image-upload-box">
+                
                 <h2>{{ $contest_cat_slug_name }} </h2>
                 <div class="row">
                     @php
@@ -104,10 +111,43 @@
                     @for($q= 0; $q < $num_of_img; $q++)
                         @php
                             $uid = $q.$key;
+                            $gallery_added_query = DB::table('contest_gallery_imges')->where('gallery_image_show_id', $uid)
+                                                    ->where('gallery_contest_unique_id',$con_unique_id)
+                                                    ->where('user_id', $user_id )->get();
+                            
                         @endphp
 
                         <div class="col-md-3">
                             <div class="upload-img">
+                                <div class="gallery-tooltip">
+                                    @if($gallery_added_query->count() == 0)
+                                    @php 
+                                    $imgae_check_validation = DB::table('contest_image_uploads')
+                                        ->where('user_id', $user_id)
+                                        ->where('contest_unique_id',$con_unique_id )
+                                        ->where('imageShow_id', $uid)
+                                        ->count();
+
+
+                                    @endphp
+                                    @if($imgae_check_validation == 0)
+                                  
+                                    <button type="submit" data-id="{{ $uid }}" class="btn btn-primary gallery{{$uid}}"  disabled>
+                                        <i class="fa fa-plus" aria-hidden="true"  ></i>Add to gallery 
+                                    </button> 
+                                    @else
+                                    <button type="submit" data-id="{{ $uid }}" class="btn btn-primary gallery{{$uid}}">
+                                        <i class="fa fa-plus" aria-hidden="true" ></i>Add to gallery
+                                    </button> 
+                                    @endif
+                                   
+                                    @else
+                                    <button type="submit" data-id="{{ $uid }}" class="btn btn-success gallery{{$uid}}">
+                                        Added to gallery
+                                    </button> 
+                                    @endif
+                                </div>
+                               
                                 <?php
                             $user_id = Auth::id(); 
                             $img_data = DB::table('contest_image_uploads')->where('user_id', $user_id)->where('contest_unique_id', $con_unique_id)->where('imageShow_id', $uid)->get();
@@ -134,6 +174,7 @@
                             <button class="btn-img-upload apply4job">Upload Image</button>
                             <div class="img-title jobDetail">
                                 <h3>Title</h3>
+                            
                                 <input type="hidden" name="contest_unique_id" id="contest_unique_id"
                                     value="{{ $image_list->contest_unique_id }}">
                                 <input type="hidden" name="contest_id" id="contest_id"
@@ -214,8 +255,7 @@
                                     var category_name = $('#contest_cat_name{{ $uid }}').val();
                                     var image_no = $('#number_of_image{{ $uid }}').val();
                                     var fileName = $('#imageUpload{{ $uid }}').val();
-                                    var fileExtension = fileName.substring(fileName.lastIndexOf(
-                                        '.') + 1);
+                                    var fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
                                     var file_data = $("#imageUpload{{ $uid }}").prop("files")[0];
                                     var title = $('#title{{ $uid }}').val();
 
@@ -245,8 +285,35 @@
                                     });
                                 });
 
-                            });
+                              
 
+                            });
+                        // add to gallery 
+                        $('.addedgallery').hide();
+                        $(document).on('click', '.gallery{{$uid}}', function(){
+                            var imageShow_id = $(this).data("id");
+                            var _token = $('input[name="_token"]').val();
+                            var contest_unique_id = $('#contest_unique_id').val();
+                            $.ajax({
+                                method: "POST",
+                                url: "{{route('addtogallery')}}",
+                                data:{
+                                    '_token':_token,
+                                    'imageShow_id':imageShow_id,
+                                    'contest_unique_id':contest_unique_id,
+                                },
+                                success:function(res){
+                                        console.log(res);
+                                        location.reload();
+                                        
+                                     
+                                }
+                            });               
+                                                    
+                        });
+                        
+                           
+                           
                         </script>
 
                     @endfor

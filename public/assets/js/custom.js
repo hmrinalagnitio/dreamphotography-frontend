@@ -466,10 +466,6 @@ $(document).ready(function() {
 
 
 
-
-
-
-
 // ====================================
 //   Home page view details content
 // =====================================
@@ -533,17 +529,7 @@ $(document).ready(function() {
 
 });
 
-// for fetch all uploaded image
-// fetch upload image 
-// $(document).ready(function() {
-//     var contest_unique_id = $('#contest_unique_id').val();
-
-//     $.ajax({
-//         url: '/fetchimage/' + contest_unique_id,
-//         type: 'get',
-//         success: function(res) {
-//             console.log(res);
-//         }
-//     });
-
-// });
+//  add to gallery tooltip button
+$(function() {
+    $(document).tooltip();
+});
