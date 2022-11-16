@@ -124,12 +124,12 @@
                 </div>
                 <nav class="nav-primary">
                     <ul class="clearfix">
-                        <li><a href="my-account.html" >My Account</a></li>
+                        <li><a href="#" >My Account</a></li>
                         <li><a href="{{route('contestlist')}}" class="{{ request()->routeIs('contestlist') ? 'active' : '' }}">Contests List</a></li>
                         <li><a href="{{route('mygallery')}}" class="{{ request()->routeIs('mygallery') ? 'active' : '' }}">Gallery</a></li>
-                        <li><a href="status.html">Status</a></li>
+                        <li><a href="#">Status</a></li>
                         <li><a href="#">Results</a></li>
-                        <li><a href="participants-list.html">Participants List</a></li>
+                        <li><a href="#">Participants List</a></li>
                     </ul>
                 </nav>
             </div>

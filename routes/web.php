@@ -72,10 +72,15 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::get('/payment/{id}', [PaymentController::class, 'index'])->name('payment'); 
     Route::post('/makepaypal', [PaymentController::class, 'place_order'])->name('placeorder');
 
-    // gallery page 
+    //============ gallery page ===========
+    //=========================================
     Route::get('/mygallery', [GalleryController::class, 'index'])->name('mygallery');
     // add to gallery button
     Route::post('/addtogallery', [GalleryController::class, 'addToGallery'])->name('addtogallery');
+    // for load more gallery btn 
+   
+    Route::post('/load_more_data', [GalleryController::class, 'load_more_data'])->name('load_more_data');
+
 
     
     

@@ -196,7 +196,7 @@ class HomeController extends Controller
                     // $last_id = $row->contest_sort_id; 
                     $last_id = $row->id;
                     // $last_id = $count;
-                    //echo $last_id;
+                    echo $last_id;
                     
                 }
                

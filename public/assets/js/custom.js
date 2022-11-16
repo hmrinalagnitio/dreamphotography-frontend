@@ -529,7 +529,34 @@ $(document).ready(function() {
 
 });
 
-//  add to gallery tooltip button
-$(function() {
-    $(document).tooltip();
+
+// for gallery page loadmore
+
+$(document).ready(function() {
+    var token = $('input[name = "_token"]').val();
+    load_more('', token);
+
+    function load_more(id = "", token) {
+        $.ajax({
+            url: "/load_more_data",
+            method: "post",
+            data: { id: id, _token: token },
+            success: function(data) {
+                console.log(data);
+                $('#seeMore').remove();
+                $('.galleryData').append(data);
+            }
+        })
+    }
+
+    $(document).on('click', '#seeMore', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        load_more(id, token);
+
+        //  alert(id);
+    })
+
+
+
 });

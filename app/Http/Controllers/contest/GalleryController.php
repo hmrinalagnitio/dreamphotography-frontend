@@ -12,28 +12,8 @@ class GalleryController extends Controller
     //
     public function index(){
   
- 
-        $myGallery= DB::table('contest_gallery_imges')
-                    ->select(
-                        'contest_gallery_imges.user_id',
-                        'contest_gallery_imges.gallery_image_show_id',
-                        'contest_gallery_imges.gallery_contest_unique_id',
-                        'contest_image_uploads.user_id',
-                        'contest_image_uploads.*')
-                        ->join('contest_image_uploads', 
-                        'contest_image_uploads.contest_unique_id', '=', 'contest_gallery_imges.gallery_contest_unique_id')
-                        ->where('contest_image_uploads.user_id', '=' ,'contest_gallery_imges.user_id')
-                        ->get();
-                    
-                  
-   
-              
-        // echo "<pre>";
-        // print_r($myGallery);
-        // exit;
-
-
-        return view('contest.gallery');
+     
+        return view('contest.gallery_load');
 
     }
 
@@ -51,8 +31,6 @@ class GalleryController extends Controller
        
         if($gallery_check == 0){
 
-         
-           
                 $add_gallery_query = DB::table('contest_gallery_imges')->insert(
                     [
                         'user_id'=>$user_id,
@@ -63,17 +41,63 @@ class GalleryController extends Controller
                     ]);
         
                     return response()->json(['status'=> 'Gallery added successfully']);
-            
-                                 
           
-            
         }
+    }
 
-        
 
-
+       // for load more btn 
+    public function load_more_data(Request $request){
+        $user_id = Auth::id();
+        $myGallery= DB::table('contest_gallery_imges')->get();
+       
        
 
+        foreach($myGallery as $gallery){
+                $g_con_unique_id[] = $gallery->gallery_contest_unique_id;
+                $g_img_show_id[] = $gallery->gallery_image_show_id;
+                $g_user_id[] = $gallery->user_id;
+            
+            }
+        
+        $gallery_data = DB::table('contest_image_uploads')
+        ->whereIn('user_id', $g_user_id)
+        ->whereIn('contest_unique_id', $g_con_unique_id)
+        ->whereIn('imageShow_id', $g_img_show_id)
+        ->orderBy('id', 'desc')
+        ->limit(3)
+        ->get();
 
+      
+
+       if($request->ajax()){
+            if($request->id){
+                $gallery_data = DB::table('contest_image_uploads')
+                ->where('id','<',$request->id)
+                ->where('user_id', $g_user_id)
+                ->whereIn('contest_unique_id', $g_con_unique_id)
+                ->whereIn('imageShow_id', $g_img_show_id)
+                ->orderBy('id', 'desc')
+                ->limit(3)
+                ->get();
+
+               
+          
+            }else{
+              
+                $gallery_data = DB::table('contest_image_uploads')
+                ->where('user_id', $g_user_id)
+                ->whereIn('contest_unique_id', $g_con_unique_id)
+                ->whereIn('imageShow_id', $g_img_show_id)
+                ->orderBy('id', 'desc')
+                ->limit(3)
+                ->get();
+               
+            }
+       }
+       return view('contest.gallery_load_more', ['gallery_data'=>$gallery_data]);
+
+       
     }
+
 }
