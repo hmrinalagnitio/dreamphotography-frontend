@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('') }}assets/css/slick.css" type="text/css">
     <link rel="stylesheet" href="{{ asset('') }}assets/css/slick-theme.css" type="text/css">
     <link href="{{ asset('') }}assets/css/style.css" rel="stylesheet">
+  
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.18/css/intlTelInput.css"
         integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw=="

@@ -19,6 +19,8 @@
   </div>
 </section>
 
+
+
 @foreach($contest_query as $contest_data)
            
 <section class="view-details__section">
@@ -159,4 +161,6 @@
 </section>
 
 @endforeach
+
 @endsection
+

@@ -36,6 +36,8 @@
     </div>
 </div>
 
+
+
 <section class="image-upload-top">
     <div class="container">
         <div class="row">
@@ -53,13 +55,16 @@
         </div>
     </div>
 </section>
+
+
+
+
 <div class="payment">
     @foreach($contest_image_list as $key => $image_list)
     <?php $con_unique_id = $image_list->contest_unique_id; ?>
     @endforeach
     <div class="payment_btn">
         @php
-    
         $user_id = Auth::id();
       
             $q = DB::table('contest_payments')->where('contest_unique_id', $con_unique_id)->get();
@@ -97,8 +102,8 @@
 
 <div class="container">
     
-
-    
+   
+  
     <section class="images-upload-section">
         <div class="container">
             <div class="image-upload-box">
@@ -120,6 +125,8 @@
                         <div class="col-md-3">
                             <div class="upload-img">
                                 <div class="gallery-tooltip">
+                                   
+
                                     @if($gallery_added_query->count() == 0)
                                     @php 
                                     $imgae_check_validation = DB::table('contest_image_uploads')
@@ -131,20 +138,20 @@
 
                                     @endphp
                                     @if($imgae_check_validation == 0)
-                                  
-                                    <button type="submit" data-id="{{ $uid }}" class="btn btn-primary gallery{{$uid}}"  disabled>
+                              
+                                    {{-- <button type="submit" data-id="{{ $uid }}" class="btn btn-primary gallery{{$uid}}"  disabled>
                                         <i class="fa fa-plus" aria-hidden="true"  ></i>Add to gallery 
-                                    </button> 
+                                    </button>  --}}
                                     @else
-                                    <button type="submit" data-id="{{ $uid }}" class="btn btn-primary gallery{{$uid}}">
+                                    {{-- <button type="submit" data-id="{{ $uid }}" class="btn btn-primary gallery{{$uid}}">
                                         <i class="fa fa-plus" aria-hidden="true" ></i>Add to gallery
-                                    </button> 
+                                    </button>  --}}
                                     @endif
                                    
                                     @else
-                                    <button type="submit" data-id="{{ $uid }}" class="btn btn-success gallery{{$uid}}">
+                                    {{-- <button type="submit" data-id="{{ $uid }}" class="btn btn-success gallery{{$uid}}">
                                         Added to gallery
-                                    </button> 
+                                    </button>  --}}
                                     @endif
                                 </div>
                                
@@ -160,18 +167,18 @@
                                  
                                 ?>
 
-                                @if($img_id == $uid)
+                              @if($img_id == $uid)
                                     <img src="{{ asset('/storage/media/uploadimage/'.$img_path ) }}"
-                                        id="imagePreview{{ $uid }}" name="picture" alt="">
+                                        id="image-preview{{$uid}}" name="picture" alt="">
                                 @else
                                     <img src="{{ asset('') }}assets/images/no-up.jpg"
                                         id="imagePreview{{ $uid }}" name="picture" alt="">
-                                @endif
+                                @endif 
 
 
                             </div>
 
-                            <button class="btn-img-upload apply4job">Upload Image</button>
+                            {{-- <button class="btn-img-upload apply4job">Upload Image</button> --}}
                             <div class="img-title jobDetail">
                                 <h3>Title</h3>
                             
@@ -188,18 +195,61 @@
                                 <input type="hidden" name="imageShow_id" id="imageShow_id" value="{{ $uid }}">
                                 <form action="" id="upload-image-form" method="POST" enctype="multipart/form-data">
                                     @csrf
-                                    <input type="text" name="title" placeholder="Title" id="title{{ $uid }}"
+                                    {{-- <input type="text" name="title" placeholder="Title" id="title{{ $uid }}"
                                         class="AlphabetsOnly">
                                     <input type="file" name="image" id="imageUpload{{ $uid }}" class="file-upload" />
                                     <span class="text-danger" id="imageChecked{{ $uid }}"> </span>
                                     <button type="submit" class="btn-img-upload img-button{{ $uid }}"
-                                        data-id="{{ $uid }}" id="upload_img">Upload</button>
+                                        data-id="{{ $uid }}" id="upload_img">Upload</button> --}}
+
+                                      
                                 </form>
+                               
                             </div>
+                            
+                            <form action="" id="upload-image-form" method="POST" enctype="multipart/form-data">
+                                @csrf
+                               
+                                
+                                 {{-- drag --}}
+
+
+<div class="image-upload">
+    <input type="file" name="" id="imageUpload{{$uid}}" >
+    <label for="logo" class="upload-field" id="file-label">
+        <div class="file-thumbnail">
+            @if($img_id == $uid)
+            <img src="{{ asset('/storage/media/uploadimage/'.$img_path ) }}"
+            id="image-preview{{$uid}}" name="picture" alt="">
+            @else
+
+            <img id="image-preview{{$uid}}" src="https://www.btklsby.go.id/images/placeholder/basic.png" alt="">
+            <h3 id="filename{{$uid}}">
+                <div class="drag{{$uid}}">
+                    Drag and Drop
+                </div>
+              
+            </h3>
+            <span class="text-danger" id="imageChecked{{ $uid }}"> </span>
+            <div class="support{{$uid}}">
+                <p>Supports JPG, PNG, SVG</p>
+            </div>
+            @endif
+           
+        </div>
+    </label>
+</div>
+{{-- drag img end --}}
+                              
+                            </form>
+                               
                         </div>
 
                         <!---itemlist--->
                         <script>
+
+
+                            
                             $(document).ready(function () {
                                 //name field 
                                 var title = $("#title{{ $uid }}").val();
@@ -211,18 +261,22 @@
                                 $('#image-msg{{ $uid }}').hide();
                                 $('#size-msg{{ $uid }}').hide();
                                 $("#imageUpload{{ $uid }}").change(function (e) {
+                                  
                                     const file = e.target.files[0];
                                     let url = window.URL.createObjectURL(file);
                                     var numb = $(this)[0].files[0].size / 1024 / 1024;
+                                    
                                     numb = numb.toFixed(2);
                                     var extension = $(this).val().split('.').pop().toLowerCase();
                                     var validFileExtensions = ['jpeg', 'jpg', 'PNG', 'png', 'svg'];
                                     if (numb >= 2) {
+                                        
                                         $('#imageChecked{{ $uid }}').show();
                                         $("#imageChecked{{ $uid }}").addClass("border-error");
                                         $("#imageChecked{{ $uid }}").html(
                                             "Please select image less then 2MB");
-
+                                        $("#image-preview{{ $uid }}").attr('src', url).hide();
+                                       
                                     } else if ($.inArray(extension, validFileExtensions) == -1) {
                                         $(".img-button{{ $uid }}").hide();
                                         $('#imageChecked{{ $uid }}').show();
@@ -230,26 +284,23 @@
                                         $("#imageChecked{{ $uid }}").html(
                                             "Only 'JPG', 'PNG', 'png', 'JPEG', 'svg' type of file is allowed!"
                                         );
-
+                                        $("#image-preview{{ $uid }}").attr('src', url).hide();
+                                    
                                     } else {
                                         $('#imageChecked{{ $uid }}').hide();
                                         $(".img-button{{ $uid }}").show();
-                                    }
+                                        $("#image-preview{{ $uid }}").attr('src', url).show();
+                                                    // ===========================================
+                                     //      IMAGE UPLOAD and fetch from database
+                                        // ===========================================
 
-                                    $("#imagePreview{{ $uid }}").attr('src', url);
-                                });
-                                // for image upload 
-                            });
-
-                            // ===========================================
-                            //      IMAGE UPLOAD and fetch from database
-                            // ===========================================
-
-                            $(document).ready(function () {
-                                var _token = $('input[name="_token"]').val();
-                                $(document).on('click', '.img-button{{ $uid }}', function (e) {
-                                    e.preventDefault();
-                                    var imageShow_id = $(this).data("id");
+                                    $(document).ready(function () {
+                             
+                                     var _token = $('input[name="_token"]').val();
+                              
+                          
+                                    var imageShow_id = $('#imageShow_id').val();
+                                    alert(imageShow_id);
                                     var contest_unique_id = $('#contest_unique_id').val();
                                     var contest_id = $('#contest_id').val();
                                     var category_name = $('#contest_cat_name{{ $uid }}').val();
@@ -278,42 +329,53 @@
                                         contentType: false,
                                         processData: false,
                                         success: function (res) {
-                                            location.reload();
+                                            // location.reload();
+                                           
 
 
                                         }
                                     });
-                                });
-
-                              
+                               
 
                             });
-                        // add to gallery 
-                        $('.addedgallery').hide();
-                        $(document).on('click', '.gallery{{$uid}}', function(){
-                            var imageShow_id = $(this).data("id");
-                            var _token = $('input[name="_token"]').val();
-                            var contest_unique_id = $('#contest_unique_id').val();
-                            $.ajax({
-                                method: "POST",
-                                url: "{{route('addtogallery')}}",
-                                data:{
-                                    '_token':_token,
-                                    'imageShow_id':imageShow_id,
-                                    'contest_unique_id':contest_unique_id,
-                                },
-                                success:function(res){
-                                        console.log(res);
-                                        location.reload();
-                                        
-                                     
-                                }
-                            });               
-                                                    
-                        });
-                        
-                           
-                           
+                            // insert image end
+                                    }
+                                    // $("#image-preview{{ $uid }}").attr('src', url);
+                                    // $('.drag{{$uid}}').hide();
+                                    // $(".support{{$uid}}").hide();
+
+                                   
+                          
+                                   
+                                });
+                                // for image upload 
+                            });
+
+                         
+                            // add to gallery 
+                            $('.addedgallery').hide();
+                            $(document).on('click', '.gallery{{$uid}}', function(){
+                                var imageShow_id = $(this).data("id");
+                                var _token = $('input[name="_token"]').val();
+                                var contest_unique_id = $('#contest_unique_id').val();
+                                $.ajax({
+                                    method: "POST",
+                                    url: "{{route('addtogallery')}}",
+                                    data:{
+                                        '_token':_token,
+                                        'imageShow_id':imageShow_id,
+                                        'contest_unique_id':contest_unique_id,
+                                    },
+                                    success:function(res){
+                                            console.log(res);
+                                            location.reload();
+                                            
+                                    }
+                                });               
+                                                        
+                            });
+                            
+                  
                         </script>
 
                     @endfor
@@ -328,3 +390,5 @@
 @endforeach
 
 @endsection
+
+

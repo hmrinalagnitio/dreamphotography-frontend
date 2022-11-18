@@ -101,7 +101,7 @@ class HomeController extends Controller
                 ->orderBy('contest_sorting_prize.contest_sort_id', 'desc')
                 ->paginate(3);
                 
-    }
+        }
             $output = '';
             $last_id = ''; 
             if(!$data->isEmpty()){
@@ -202,7 +202,7 @@ class HomeController extends Controller
                
                 $output .= '
                 
-                 <div id="load_more" class="btn__seeMore">
+                    <div id="load_more" class="btn__seeMore">
                         <button type="button" name="load_more_button"  
                      data-id="'.$last_id.'" id="load_more_button"><i class="fa fa-spinner" aria-hidden="true"></i> Show More</button>
                     </div>

@@ -80,6 +80,7 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     // for load more gallery btn 
    
     Route::post('/load_more_data', [GalleryController::class, 'load_more_data'])->name('load_more_data');
+ 
 
 
     

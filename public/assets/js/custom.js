@@ -515,7 +515,7 @@ $(document).ready(function() {
                     'contest_id': contest_id
                 },
                 success: function(res) {
-                    console.log(res);
+                    // console.log(res);
                     if (res.action == 'add') {
                         $('button[data-id=' + contest_id + ']').html('Watching');
                     } else if (res.action == 'remove') {
@@ -542,7 +542,7 @@ $(document).ready(function() {
             method: "post",
             data: { id: id, _token: token },
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 $('#seeMore').remove();
                 $('.galleryData').append(data);
             }
@@ -560,3 +560,7 @@ $(document).ready(function() {
 
 
 });
+
+
+// for drag image box
+// =================================
