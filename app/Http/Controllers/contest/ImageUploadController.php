@@ -56,8 +56,6 @@ class ImageUploadController extends Controller
     {
         //
            
-            
-
         $contest_name = $request->contest_name;
         $imageShow_id = $request->imageShow_id;
         $contest_unique_id = $request->contest_unique_id;
@@ -130,8 +128,28 @@ class ImageUploadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    // for delete image when delete button click
+
+    public function destroy(Request $request)
     {
         //
+        $delete_image_id =  $request->delete_image_id;
+        $delete_con_unique_id =  $request->delete_con_unique_id; 
+        $user_id = Auth::id();
+
+      
+
+
+        $delete_query = DB::table('contest_image_uploads')
+                            ->where('contest_unique_id', $delete_con_unique_id)
+                            ->where('imageShow_id', $delete_image_id)
+                            ->where('user_id', $user_id)
+                            ->delete(); 
+      
+            if($delete_query){
+                return response()->json(['status'=>"image deleted successfully !"]);
+            }
+
+      
     }
 }

@@ -66,6 +66,8 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::get('/imageupload/{con_id}',[ImageUploadController::class, 'index'])->name('imageupload');
     Route::get('/uploadimage',[ImageUploadController::class, 'create'])->name('uploadimage');
     Route::post('/insertimage',[ImageUploadController::class, 'store'])->name('insertimage');
+    // delete image 
+    Route::post('/deleteImage', [ImageUploadController::class, 'destroy'])->name('deleteImage');
     Route::get('/imgUploadSuccess', [ImageUploadSuccessController::class, 'index'])->name('imgUploadSuccess');
 
     // for paypal payment page 

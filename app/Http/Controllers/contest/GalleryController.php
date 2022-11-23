@@ -19,6 +19,7 @@ class GalleryController extends Controller
 
 
     public function addToGallery(Request $request){
+        
         $user_id = Auth::id();
         $imageShow_id = $request->imageShow_id;
         $contest_unique_id = $request->contest_unique_id;
