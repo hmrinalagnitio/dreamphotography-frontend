@@ -94,9 +94,25 @@ class ImageUploadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function removeGalleryImage(Request $request)
     {
         //
+        $user_id = Auth::id();
+
+        $remove_gallery_id = $request->remove_gallery_id;
+        $remove_con_unique_id = $request->remove_con_unique_id;
+
+        $remove_image_q = DB::table('contest_gallery_imges')
+                            ->where('user_id', $user_id)
+                            ->where('gallery_image_show_id', $remove_gallery_id)
+                            ->where('gallery_contest_unique_id', $remove_con_unique_id)
+                            ->delete();
+        if($remove_image_q){
+            return response()->json(['status'=>'Gallery image remove successfully !']);
+        }
+
+       
+
     }
 
     /**

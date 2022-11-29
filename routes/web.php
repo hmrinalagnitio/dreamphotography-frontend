@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{
     LoginController,
     RegisterController,
+    MyAccountController,
     };
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\contest\{
@@ -68,6 +69,8 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::post('/insertimage',[ImageUploadController::class, 'store'])->name('insertimage');
     // delete image 
     Route::post('/deleteImage', [ImageUploadController::class, 'destroy'])->name('deleteImage');
+    // remove gallery 
+    Route::post('/removeImage', [ImageUploadController::class, 'removeGalleryImage'])->name('removeImage');
     Route::get('/imgUploadSuccess', [ImageUploadSuccessController::class, 'index'])->name('imgUploadSuccess');
 
     // for paypal payment page 
@@ -80,9 +83,13 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     // add to gallery button
     Route::post('/addtogallery', [GalleryController::class, 'addToGallery'])->name('addtogallery');
     // for load more gallery btn 
-   
     Route::post('/load_more_data', [GalleryController::class, 'load_more_data'])->name('load_more_data');
- 
+    
+    // =========== My account ===========
+    // ==================================
+    Route::get('/my-account', [MyAccountController::class, 'index'])->name('my-account');
+    Route::post('/upload_profile_img', [MyAccountController::class, 'upload_profile_image'])->name('upload_profile_img'); 
+    
 
 
     

@@ -562,5 +562,52 @@ $(document).ready(function() {
 });
 
 
-// for drag image box
-// =================================
+// for myaccount edit user profile picture
+// =======================================
+
+
+$('#user_profile_pic').change(function(e) {
+    var _token = $('input[name="_token"]').val();
+    const file = e.target.files[0];
+    let url = window.URL.createObjectURL(file);
+    var numb = this.files[0].size;
+    var extension = $(this).val().split('.').pop().toLowerCase();
+    var file_data = $("#user_profile_pic").prop("files")[0];
+    fd = new FormData();
+    fd.append('_token', _token);
+    fd.append('file', file_data);
+
+
+    if (numb > 200000) {
+        $("#imageChecked").html(
+            "Please select image less then 200 kb");
+
+    } else {
+
+        if (extension == "jpg" || extension == "jpeg" || extension == "png" || extension == "PNG") {
+            document.getElementById('image-preview').src = url;
+            var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '')
+            $.ajax({
+                url: "/upload_profile_img",
+                method: "post",
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    console.log(res);
+                    $("#imageChecked").hide();
+                    // location.reload();
+                }
+
+            });
+            // document.getElementById('image-preview').src = url;
+            // var filename = path.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
+            // document.getElementById("filename").innerHTML = filename;
+
+        } else {
+            $("#imageChecked").html("File not supported. Kindly Upload the Image of below given extension ")
+        }
+    }
+
+
+})

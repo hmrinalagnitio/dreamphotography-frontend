@@ -4231,3 +4231,73 @@ body {
 #upload-image-form {
     position: relative;
 }
+
+
+/* for minus icon imgae drag and drop  */
+
+.minus-icon {
+    position: absolute;
+    top: 20px;
+    color: #fff;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.50);
+    border-radius: 6px;
+    right: 70px;
+    cursor: pointer;
+    z-index: 9;
+}
+
+
+/* for user profile pic */
+
+.image-upload {
+    position: relative;
+    max-width: 360px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.image-upload input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+}
+
+.upload-field {
+    display: block;
+    background: #F4FAFE;
+    padding: 12px;
+    border-radius: 11px;
+}
+
+.upload-field .file-thumbnail {
+    cursor: pointer;
+    border: 1px dashed #BBD9EC;
+    border-radius: 11px;
+    text-align: center;
+    padding: 20px;
+}
+
+.upload-field .file-thumbnail img {
+    width: 50px;
+}
+
+.upload-field .file-thumbnail h3 {
+    font-size: 12px;
+    color: #000000;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.upload-field .file-thumbnail p {
+    font-size: 12px;
+    color: #9ABCD1;
+    margin-bottom: 0;
+}

@@ -146,13 +146,10 @@
                             $img_id = '';
                             $contest_uniq_id = '';
 
-                         if(($img_data)){
-                                             
+                        if(($img_data)){               
                             foreach ($img_data as $data) {
                                 $img_path = $data->image_path;
                                 $img_id = $data->imageShow_id; 
-                                
-    
                             }
                         }
                       
@@ -173,56 +170,69 @@
                                     value="{{ $image_list->contest_cat_name }}">
                                 <input type="hidden" name="contest_cat_slug" id="contest_cat_slug{{ $uid }}"
                                     value="{{ $image_list->contest_cat_slug }}">
-                                <input type="hidden" name="imageShow_id" id="imageShow_id" value="{{ $uid }}">
-                             
-                               
+                                <input type="hidden" name="imageShow_id" id="imageShow_id" value="{{ $uid }}">                           
                             </div>
-                            
                             <form action="" id="upload-image-form" method="POST" enctype="multipart/form-data">
                                 @csrf
-                               
-                                 {{-- drag --}}
+                                 {{-- drag --}}                  
+                                <div class="image-upload">    
+                                <input type="file" name="" id="imageUpload{{$uid}}"  >
+                                <input type="hidden" name="" id="imageUpload_id{{$uid}}" value="{{$uid}}"  >
+                                <input type="hidden" name="" id="delete_con_unique_id" value="{{$con_unique_id}}">
+                                <label for="logo" class="upload-field" id="file-label">
+                                    <div class="file-thumbnail">
+                                        @if($img_id == $uid)
+                                        <img src="{{ asset('/storage/media/uploadimage/'.$img_path ) }}" 
+                                        id="image-preview{{$uid}}" name="picture" alt="">
+                                        <div class="del-icon delete_id{{ $img_id }}">
+                                            <input type="hidden" name="delete_img_id" id="delete_img_id{{ $img_id }}" value="{{ $img_id }}">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </div> 
+                                        @php
+                                            $remove_image = DB::table('contest_gallery_imges')
+                                                            ->where('user_id', $user_id)
+                                                            ->where('gallery_image_show_id', $uid)
+                                                            ->where('gallery_contest_unique_id', $con_unique_id)
+                                                            ->get();
+                                                            
+                                            $remove_image_show_id = '';
+                                            $remove_image_con_user_id = ''; 
 
-                 
-<div class="image-upload">
-       
-    <input type="file" name="" id="imageUpload{{$uid}}"  >
-    <input type="hidden" name="" id="imageUpload_id{{$uid}}" value="{{$uid}}"  >
-    <input type="hidden" name="" id="delete_con_unique_id" value="{{$con_unique_id}}">
-    <label for="logo" class="upload-field" id="file-label">
-        <div class="file-thumbnail">
-            @if($img_id == $uid)
-            <img src="{{ asset('/storage/media/uploadimage/'.$img_path ) }}" 
-            id="image-preview{{$uid}}" name="picture" alt="">
-            <div class="del-icon delete_id{{ $img_id }}">
-                <input type="hidden" name="delete_img_id" id="delete_img_id{{ $img_id }}" value="{{ $img_id }}">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-            </div> 
-            <div class="plus-icon add_gallery_id{{ $img_id }}">
-                <input type="hidden" name="add_to_gallery" id="add_to_gallery{{ $img_id }}" value="{{ $img_id }}">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-            </div> 
-            <div class="minus-icon remove_gallery_id{{ $img_id }}">
-                <input type="hidden" name="remove_to_gallery" id="remove_to_gallery{{ $img_id }}" value="{{ $img_id }}">
-                <i class="fa fa-minus" aria-hidden="true"></i>
-            </div> 
-            @else
-            <img id="image-preview{{$uid}}" src="https://www.btklsby.go.id/images/placeholder/basic.png" alt="" class="defult-img">
-            <h3 id="filename{{$uid}}">
-                <div class="drag{{$uid}}">
-                    Drag and Drop
-                </div>
-              
-            </h3>
-            <span class="text-danger" id="imageChecked{{ $uid }}"> </span>
-            <div class="support{{$uid}}">
-                <p>Supports JPG, PNG, SVG</p>
-            </div>
-            @endif
-           
-        </div>
-    </label>
-</div>
+                                            foreach ($remove_image as $value) {
+                                                $remove_image_show_id =  $value->gallery_image_show_id;
+                                                $remove_image_user_id =  $value->user_id;
+                                                $remove_image_con_unique_id = $value->gallery_contest_unique_id;
+                                            }
+                                          
+                                        @endphp
+                                        @if(($remove_image_show_id == $img_id) &&  ($remove_image_user_id == $user_id) && ($remove_image_con_unique_id == $con_unique_id))
+                                            <div class="minus-icon remove_gallery_id{{ $img_id }}">
+                                                <input type="hidden" name="remove_to_gallery" id="remove_to_gallery{{ $img_id }}" value="{{ $img_id }}">
+                                                <i class="fa fa-minus" aria-hidden="true"></i>
+                                            </div> 
+                                        @else
+                                            <div class="plus-icon add_gallery_id{{ $img_id }}">
+                                                <input type="hidden" name="add_to_gallery" id="add_to_gallery{{ $img_id }}" value="{{ $img_id }}">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </div> 
+                                        @endif
+                                        @else
+                                        <img id="image-preview{{$uid}}" src="https://www.btklsby.go.id/images/placeholder/basic.png" alt="" class="defult-img">
+                                        <h3 id="filename{{$uid}}">
+                                            <div class="drag{{$uid}}">
+                                                Drag and Drop
+                                            </div>
+                                            
+                                        </h3>
+                                        <span class="text-danger" id="imageChecked{{ $uid }}"> </span>
+                                        <div class="support{{$uid}}">
+                                            <p>Supports JPG, PNG, SVG</p>
+                                        </div>
+                                        @endif
+                                        
+                                    </div>
+                                </label>
+                                </div>
 
         {{-- drag img end --}}
                               
@@ -232,8 +242,6 @@
                         <!---itemlist--->
                         <script>
 
-
-                            
                             $(document).ready(function () {
                                 //name field 
                                 var title = $("#title{{ $uid }}").val();
@@ -252,7 +260,7 @@
                                     
                                     numb = numb.toFixed(2);
                                     var extension = $(this).val().split('.').pop().toLowerCase();
-                                    var validFileExtensions = ['jpeg', 'jpg', 'PNG', 'png', 'svg'];
+                                    var validFileExtensions = ['jpeg', 'jpg', 'PNG', 'png'];
                                     if (numb >= 2) {
                                         
                                         $('#imageChecked{{ $uid }}').show();
@@ -266,7 +274,7 @@
                                         $('#imageChecked{{ $uid }}').show();
                                         $("#imageChecked{{ $uid }}").addClass("border-error");
                                         $("#imageChecked{{ $uid }}").html(
-                                            "Only 'JPG', 'PNG', 'png', 'JPEG', 'svg' type of file is allowed!"
+                                            "Only 'JPG', 'PNG', 'png', 'JPEG' type of file is allowed!"
                                         );
                                         $("#image-preview{{ $uid }}").attr('src', url).hide();
                                     
@@ -356,20 +364,43 @@
                                     url:"/deleteImage",
                                     data:{
                                         'delete_image_id':delete_image_id,
-                                        'delete_con_unique_id':delete_con_unique_id
+                                        'delete_con_unique_id':delete_con_unique_id,
                                     },
                                     success:function(response){
                                         // console.log(response);
                                         location.reload();
-
                                     }
                                 });
 
-                            })
+                            }); 
+
+
+                            // for remove from gallery image 
+                            $(document).on('click', '.remove_gallery_id{{$uid}}', function(){
+                                var remove_gallery_id = $('#remove_to_gallery{{$uid}}').val();
+                                var remove_con_unique_id = $('#contest_unique_id').val();
+                                alert(remove_con_unique_id); 
+                                $.ajax({
+                                    method: 'post',
+                                    url: '/removeImage',
+                                    data:{
+                                        'remove_gallery_id':remove_gallery_id,
+                                        'remove_con_unique_id':remove_con_unique_id
+                                    },
+                                    success:function(res){
+                                        console.log(res);
+                                        location.reload();
+
+
+                                    }
+
+                                })
+                               
+
+
+                            });
                               
-                        
-                            
-                  
+            
                         </script>
 
                     @endfor
