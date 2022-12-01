@@ -504,9 +504,9 @@ $(document).ready(function() {
         var user_id = $('#watch_user_id').data('value');
         if (user_id == "") {
             window.location.href = 'login';
-            // alert(' not login');
+
         } else {
-            // alert('u are login');
+
             $.ajax({
                 method: "post",
                 url: "/watch/" + user_id,
@@ -515,11 +515,16 @@ $(document).ready(function() {
                     'contest_id': contest_id
                 },
                 success: function(res) {
-                    // console.log(res);
+
                     if (res.action == 'add') {
                         $('button[data-id=' + contest_id + ']').html('Watching');
+                        location.reload();
+                        // $('[data-id~="Watch"] button').addClass('watching');
+
                     } else if (res.action == 'remove') {
                         $('button[data-id=' + contest_id + ']').html('Watch');
+                        // $('[data-id~="Watch"] button').addClass('watch');
+                        location.reload();
                     }
                 }
             });
@@ -577,13 +582,9 @@ $('#user_profile_pic').change(function(e) {
     fd.append('_token', _token);
     fd.append('file', file_data);
 
-
     if (numb > 200000) {
-        $("#imageChecked").html(
-            "Please select image less then 200 kb");
-
+        $("#imageChecked").html("Please select image less then 200 kb");
     } else {
-
         if (extension == "jpg" || extension == "jpeg" || extension == "png" || extension == "PNG") {
             document.getElementById('image-preview').src = url;
             var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '')
@@ -596,18 +597,27 @@ $('#user_profile_pic').change(function(e) {
                 success: function(res) {
                     console.log(res);
                     $("#imageChecked").hide();
-                    // location.reload();
+                    location.reload();
                 }
-
             });
-            // document.getElementById('image-preview').src = url;
-            // var filename = path.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
-            // document.getElementById("filename").innerHTML = filename;
-
         } else {
             $("#imageChecked").html("File not supported. Kindly Upload the Image of below given extension ")
         }
     }
 
+});
 
-})
+$(document).on('click', '.btn-edi-Profile', function() {
+    var edit_prpfile_id = $(this).data('id');
+    $.ajax({
+        type: 'get',
+        url: 'edit_user_profile/' + edit_prpfile_id,
+        success: function(response) {
+            console.log(response.user_data.id);
+
+            $('#name').val(response.user_data.name);
+
+        }
+    })
+
+});

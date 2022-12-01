@@ -129,9 +129,9 @@ class HomeController extends Controller
                         $countWatchlist =WacthList::countWatchlist($row->contest_id);        
                     }
                     if($countWatchlist > 0){
-                    $w = 'Watching';
+                        $w = 'Watching';
                     }else{
-                    $w = 'Watch';
+                        $w = 'Watch';
                     }
 
                     $output .= '
@@ -181,11 +181,14 @@ class HomeController extends Controller
                                             </div>
                                         </div>
                                     </li>
-                                    <input type="hidden" value=" '.Auth::id().'" id="user_id">
+                                    <input type="hidden" value="'.Auth::id().'" id="user_id">
                                     <li>
-                                     <button data-id="'.$row->contest_id.'"  data-value="'.Auth::id().'" id="watch_user_id" class="btn-Watch add_watch" >
-                                      '.$w.'
+                                        <div data-id="'.$w.'">
+                                        <button data-id="'.$row->contest_id.'"  data-value="'.Auth::id().'" id="watch_user_id" class="btn-Watch add_watch" >
+                                        '.$w.'
                                         </button>
+                                        </div>
+                                        
                                     </li>
                                 </ul>
                             </div>
@@ -308,10 +311,11 @@ class HomeController extends Controller
                     $countWatchlist =WacthList::countWatchlist($row->contest_id);        
                 }
                 if($countWatchlist > 0){
-                $w = 'Watching';
-                }else{
-                $w = 'Watch';
-                }
+                    $w ='Watching';
+                    }else{
+                    $w = 'Watch';
+                    }
+
                 $output .= '
                 <div class="load-more contemt--wrapper">
                     <div class="listing-wrap">
@@ -361,9 +365,12 @@ class HomeController extends Controller
                                 </li>
                                 <input type="hidden" value=" '.Auth::id().'" id="user_id">
                                 <li>
+                                <div class="">
                                  <button data-id="'.$row->contest_id.'"  data-value="'.Auth::id().'" id="watch_user_id" class="btn-Watch add_watch" >
-                                  '.$w.'
-                                    </button>
+                                '.$w.'
+                                </button>
+                                </div>
+                                
                                 </li>
                             </ul>
                         </div>

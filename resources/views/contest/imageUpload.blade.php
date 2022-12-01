@@ -226,7 +226,7 @@
                                         </h3>
                                         <span class="text-danger" id="imageChecked{{ $uid }}"> </span>
                                         <div class="support{{$uid}}">
-                                            <p>Supports JPG, PNG, SVG</p>
+                                            <p>Supports JPG, JPEG, PNG,</p>
                                         </div>
                                         @endif
                                         

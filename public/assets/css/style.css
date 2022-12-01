@@ -3173,10 +3173,11 @@ input:focus {
     line-height: 30px;
 }
 
-.btn-Watch:hover {
+
+/* .btn-Watch:hover {
     color: white;
     background-color: #00b3ea;
-}
+} */
 
 .listing__last {
     width: 100%;
@@ -4300,4 +4301,26 @@ body {
     font-size: 12px;
     color: #9ABCD1;
     margin-bottom: 0;
+}
+
+[data-id="Watch"] button {
+    background-color: #dad7d9;
+    border: #dad7d9 1px solid;
+    color: #313030;
+    font-size: 14px;
+    height: 30px;
+    padding: 0 15px;
+    border-radius: 4px;
+    line-height: 30px;
+}
+
+[data-id="Watching"] button {
+    background: #00b3ea;
+    border: #00b3ea 1px solid;
+    color: #fff;
+    font-size: 14px;
+    height: 30px;
+    padding: 0 15px;
+    border-radius: 4px;
+    line-height: 30px;
 }

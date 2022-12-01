@@ -24,8 +24,7 @@ class MyAccountController extends Controller
         $get_imag  = DB::table('users')->where('id', $user_id)->first();
         $image = '';
         $image = $get_imag->user_image_path;
-        // echo($image); 
-        // die;
+       
         if($image != ''){
             unlink("storage/media/profileImage/".$get_imag->user_image_path); 
             $file->storeAs("public/"."media/"."profileImage/".$user_id,$filename); //Pass the date and time folder name
@@ -34,7 +33,6 @@ class MyAccountController extends Controller
                 'user_image_path'=> $image_path,
             ]);
         }else{
-
             $file->storeAs("public/"."media/"."profileImage/".$user_id,$filename); //Pass the date and time folder name
             $image_path = ($user_id.'/'.$filename);
             // print_r($image_path); exit;
@@ -42,15 +40,19 @@ class MyAccountController extends Controller
                 'user_image_path'=> $image_path,
             ]);
         }
+ 
+    }
 
-   
-            
-       
+    public function edit_profile($id){
         
-       
-       
-       
-        
+        $user_data = DB::table('users')->where('id', $id)->first();
+        return response()->json([
+            'status'=>200,
+            'user_data'=>$user_data,
+           
+        ]);
+
+
     }
 
     

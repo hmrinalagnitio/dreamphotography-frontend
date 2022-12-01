@@ -89,7 +89,7 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     // ==================================
     Route::get('/my-account', [MyAccountController::class, 'index'])->name('my-account');
     Route::post('/upload_profile_img', [MyAccountController::class, 'upload_profile_image'])->name('upload_profile_img'); 
-    
+    Route::get('/edit_user_profile/{id}', [MyAccountController::class, 'edit_profile'])->name('edit_user_profile');
 
 
     

@@ -16,22 +16,28 @@
                     <div class="editprofile__modal-row">
                         <div class="editprofile__modal-col">
                             <label for="">Full Name</label>
-                            <input type="text" value="Sanjoy">
+                            <input type="text" id="name">
                         </div>
                         <div class="editprofile__modal-col">
                             <label for="">Password</label>
-                            <input type="password" value="password">
+                            <input type="password" id="password">
                         </div>
                     </div>
                     <div class="editprofile__modal-row">
                         <div class="editprofile__modal-col">
                             <label for="">Address</label>
-                            <input type="text" value="is simply dummy text of the printing and typesetting industry.">
+                            <input type="text" id="address">
                         </div>
                         <div class="editprofile__modal-col">
+                            @php
+                               $countries_list = DB::table('countries')->get();
+                            @endphp
+                            
                             <label for="">Country</label>
-                            <select>
-                                <option value="">Country</option>
+                            <select id="country_name">
+                                @foreach($countries_list as $countries_name)
+                                <option value="{{$countries_name->id}}">{{$countries_name->name}}</option>
+                                @endforeach
                                 <option value="">Country 1</option>
                         </select>
                         </div>
@@ -39,11 +45,11 @@
                     <div class="editprofile__modal-row">
                         <div class="editprofile__modal-col">
                             <label for="">Zip Code</label>
-                            <input type="text" value="714444">
+                            <input type="text" id="zip_code">
                         </div>
                         <div class="editprofile__modal-col">
                             <label for="">Mobile No</label>
-                            <input type="text" value="+91 983 065 8028">
+                            <input type="text" id="mobile_no">
                         </div>
                     </div>
                    
@@ -115,7 +121,7 @@
                         <div class="my-details-col-right">52/1 Lorem ipsum73, Dummy place11A, India, Pin-700001</div>
                     </div>
                     <div class="my-details-row">
-                        <button class="btn-edi-Profile" data-bs-toggle="modal" data-bs-target="#editprofile"><img src="assets/images/edit.png" alt=""> Edit Profile</button>
+                        <button class="btn-edi-Profile" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#editprofile"><img src="assets/images/edit.png" alt=""> Edit Profile</button>
                     </div>
                 </div>
                 @endforeach
