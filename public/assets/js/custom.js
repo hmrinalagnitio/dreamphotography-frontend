@@ -572,6 +572,7 @@ $(document).ready(function() {
 
 
 $('#user_profile_pic').change(function(e) {
+
     var _token = $('input[name="_token"]').val();
     const file = e.target.files[0];
     let url = window.URL.createObjectURL(file);
@@ -595,9 +596,9 @@ $('#user_profile_pic').change(function(e) {
                 contentType: false,
                 processData: false,
                 success: function(res) {
-                    console.log(res);
+
                     $("#imageChecked").hide();
-                    location.reload();
+                    // location.reload();
                 }
             });
         } else {
@@ -613,11 +614,29 @@ $(document).on('click', '.btn-edi-Profile', function() {
         type: 'get',
         url: 'edit_user_profile/' + edit_prpfile_id,
         success: function(response) {
-            console.log(response.user_data.id);
+
 
             $('#name').val(response.user_data.name);
+            $('#address').val(response.user_data.address);
+            $('#country_name').val(response.user_data.country);
+            $('#zip_code').val(response.user_data.zipcode);
+            $('#mobile_no').val(response.user_data.phone_number);
 
         }
     })
-
 });
+
+
+// for update user profile
+$(document).on('click', '#update', function() {
+
+    $.ajax({
+        type: "put",
+        url: "update/",
+        success: function(res) {
+            console.log(res);
+        }
+    })
+
+
+})

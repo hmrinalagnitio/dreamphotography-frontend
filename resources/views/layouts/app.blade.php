@@ -31,6 +31,11 @@
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
         integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+        {{-- for country code with phone number --}}
+        <link rel="stylesheet" href="{{asset('assets/phonenumber/build/css/demo.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/phonenumber/build/css/intlTelInput.css')}}">
+     
      
 
 </head>
@@ -70,6 +75,63 @@
         integrity="sha512-hpJ6J4jGqnovQ5g1J39VtNq1/UPsaFjjR6tuCVVkKtFIx8Uy4GeixgIxHPSG72lRUYx1xg/Em+dsqxvKNwyrSg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- for phone number validation with country code --}}
+    <script src="{{asset('assets/phonenumber/build/js/intlTelInput.js')}}"></script>
+   {{-- for phone number validation with country code --}}
+<script>
+    
+// for mobile number validation with country code 
+
+var input = document.querySelector("#mobile_no"),
+    errorMsg = document.querySelector("#error-msg"),
+    validMsg = document.querySelector("#valid-msg");
+    $('#valid-msg').hide();
+
+// here, the index maps to the error code returned from getValidationError - see readme
+var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+// initialise plugin
+var iti = window.intlTelInput(input, {
+    utilsScript: "{{asset('')}}assets/phonenumber/build/js/utils.js?1638200991544"  
+});
+
+
+
+var reset = function() {
+    input.classList.remove("error");
+    errorMsg.innerHTML = "";
+    errorMsg.classList.add("hide");
+    validMsg.classList.add("hide");
+};
+
+// on blur: validate
+input.addEventListener('blur', function() {
+
+    reset();
+    if (input.value.trim()) {
+        if (iti.isValidNumber()) {
+            validMsg.classList.remove("hide");
+            $('#valid-msg').show();
+            $('#update').prop("disabled", false);
+        } else {
+            input.classList.add("error");
+            var errorCode = iti.getValidationError();
+            errorMsg.innerHTML = errorMap[errorCode];
+            errorMsg.classList.remove("hide");
+            $('#valid-msg').hide();
+            $('#update').prop("disabled", true);
+        }
+    }
+});
+
+// on keyup / change flag: reset
+input.addEventListener('change', reset);
+input.addEventListener('keyup', reset);
+
+
+
+
+</script>
 
 </body>
 </html>

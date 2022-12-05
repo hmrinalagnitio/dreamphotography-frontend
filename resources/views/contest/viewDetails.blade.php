@@ -18,9 +18,6 @@
       </div>
   </div>
 </section>
-
-
-
 @foreach($contest_query as $contest_data)
            
 <section class="view-details__section">
@@ -116,11 +113,7 @@
 </section>
 
 @php
-
-
 @endphp
-
-
 <div class="body-view-detele">        
     <div class="container">
         <div class="row">

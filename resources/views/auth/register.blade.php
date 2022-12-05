@@ -20,7 +20,6 @@
             <div class="alert alert-danger">{{Session::get('fail')}}</div>
         @endif
       
-
         <div class="form-field d-flex align-items-center">
             <span class="fa fa-user"></span>
             <input type="text" name="name" id="name" placeholder="Name" class="AlphabetsOnly">

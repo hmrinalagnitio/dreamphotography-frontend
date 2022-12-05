@@ -11,22 +11,25 @@
                 <div class="editprofile__modal__header">
                     <img src="assets/images/logo.png" alt="">
                 </div>
+                <form action="{{route('updateProfile')}}" method="POST" >
+                    @csrf
+                    @method('PUT')
                 <div class="editprofile__modal">
                     <h3> Edit Profile</h3>
                     <div class="editprofile__modal-row">
                         <div class="editprofile__modal-col">
                             <label for="">Full Name</label>
-                            <input type="text" id="name">
+                            <input type="text" id="name" name="name">
                         </div>
                         <div class="editprofile__modal-col">
                             <label for="">Password</label>
-                            <input type="password" id="password">
+                            <input type="password" id="password" name="password">
                         </div>
                     </div>
                     <div class="editprofile__modal-row">
                         <div class="editprofile__modal-col">
                             <label for="">Address</label>
-                            <input type="text" id="address">
+                            <input type="text" id="address" name="address">
                         </div>
                         <div class="editprofile__modal-col">
                             @php
@@ -34,29 +37,33 @@
                             @endphp
                             
                             <label for="">Country</label>
-                            <select id="country_name">
+                            <select id="country_name" name="country_name">
                                 @foreach($countries_list as $countries_name)
-                                <option value="{{$countries_name->id}}">{{$countries_name->name}}</option>
+                                <option value="{{$countries_name->name}}">{{$countries_name->name}}</option>
                                 @endforeach
-                                <option value="">Country 1</option>
+                              
                         </select>
                         </div>
                     </div>
                     <div class="editprofile__modal-row">
                         <div class="editprofile__modal-col">
                             <label for="">Zip Code</label>
-                            <input type="text" id="zip_code">
+                            <input type="text" id="zip_code" name="zipcode">
                         </div>
                         <div class="editprofile__modal-col">
                             <label for="">Mobile No</label>
-                            <input type="text" id="mobile_no">
+                            <input type="number" id="mobile_no" placeholder="+1 4561234561" name="phone_number">
+                            <span id="valid-msg" class="hide">✓ Valid</span>
+                            <span id="error-msg" class="hide"></span>
+                         
                         </div>
                     </div>
                    
                     <div class="editprofile__modal-row">
-                        <div class="editprofile__modal-col"><input type="submit" value="Update Account"></div>
+                        <div class="editprofile__modal-col"><input type="submit" value="Update Account" id="update"></div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -69,9 +76,8 @@
                 <div class="col">
                     <div class="link-page">
                         <ul>
-                            <li><a href="#">Home</a> ></li>
-                            <li><a href="#">Login</a> ></li>
-                            <li>My Account</li>
+                            <li><a href="{{ route('home') }}">Home</a> ></li>
+                            <li><a href="{{ url()->previous() }}">Back</a></li>
                         </ul>
                     </div>
                 </div>
@@ -107,18 +113,18 @@
                         <div class="my-details-col-left"><span>Email Id :</span></div>
                         <div class="my-details-col-right">{{$item->email}}</div>
                     </div>
-                    <div class="my-details-row">
+                    {{-- <div class="my-details-row">
                         <div class="my-details-col-left"><span>Gender:</span></div>
                         <div class="my-details-col-right">Male</div>
-                    </div>
+                    </div> --}}
                     <div class="my-details-row">
                         <div class="my-details-col-left"><span>Mobile No :</span></div>
-                        <div class="my-details-col-right">+01 234-567-89</div>
+                        <div class="my-details-col-right">{{$item->phone_number}}</div>
                     </div>
                    
                     <div class="my-details-row">
                         <div class="my-details-col-left"><span>Address :</span></div>
-                        <div class="my-details-col-right">52/1 Lorem ipsum73, Dummy place11A, India, Pin-700001</div>
+                        <div class="my-details-col-right">{{$item->address}}</div>
                     </div>
                     <div class="my-details-row">
                         <button class="btn-edi-Profile" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#editprofile"><img src="assets/images/edit.png" alt=""> Edit Profile</button>
@@ -178,327 +184,87 @@
 <section class="contest-box">
     <div class="container">
         <h2>Contests list</h2>
-        <div class="listing__top">
-            <h3>Sort By</h3>
-            <a href="#" class="btn-filter">Price -- Low to High</a>
-            <a href="#" class="btn-filter">Price -- High to Low</a>
-            <a href="#" class="btn-filter">Newest First</a>
+        <div class="col-md-4">
+            <label>Sort By</label>
+            <div class="select_box">
+                <select name="sort" id="sort">
+                    <option value="NEWDESC">Newest First</option>
+                    <option value="ASC">Price -- Low to High</option>
+                    <option value="DESC">Price -- High to Low</option>
+                </select>
+            </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <div class="load-more">
-                    <div class="listing-wrap">
-                        <div class="listing__title">
-                            <h2>Weekly <span>Contest</span></h2>
-                        </div>
-                        <div class="listing__description text-box" data-maxlength="210">
-                            <h3><a href="#">Contest Name</a></h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nulla laudantium voluptate, consequuntur esse magnam dolorem numquam perspiciatis incidunt maxime perferendis quibusdam unde, vitae expedita quam laborum delectus.
-                                Natus, officiis!.........</p>
-                            <a href="view-details.html" class="btn-view-details">View Details</a>
-                            <a href="payment-now.html" class="btn-participate-now">Participate Now</a>
-                        </div>
-                        <div class="listing__last">
-                            <ul>
-                                <li><i class="fa fa-user"></i>
-                                    <p>100 <span>Paticipant</span></p>
-                                </li>
-                                <li>
-                                    <div class="clockdiv" data-date="May 13, 2022 21:14:01">
-                                        <i class="fa fa-clock-o"></i>
-                                        <div class="clockdiv__date">
-                                            <p><span class="days"></span> Days,</p>
-                                        </div>
-                                        <div class="clockdiv__date">
-                                            <p><span class="hours"></span> Hours</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="" class="btn-Watch">Watch</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="load-more">
-                    <div class="listing-wrap">
-                        <div class="listing__title">
-                            <h2>Monthly <span>Contest</span></h2>
-                        </div>
-                        <div class="listing__description text-box" data-maxlength="210">
-                            <h3><a href="#">Contest Name</a></h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nulla laudantium voluptate, consequuntur esse magnam dolorem numquam perspiciatis incidunt maxime perferendis quibusdam unde, vitae expedita quam laborum delectus.
-                                Natus, officiis!..........</p>
-                            <a href="view-details.html" class="btn-view-details">View Details</a>
-                            <a href="payment-now.html" class="btn-participate-now">Participate Now</a>
-                        </div>
-                        <div class="listing__last">
-                            <ul>
-                                <li><i class="fa fa-user"></i>
-                                    <p>100 <span>Paticipant</span></p>
-                                </li>
-                                <li>
-                                    <div class="clockdiv" data-date="December 22, 2022 18:22:23">
-                                        <i class="fa fa-clock-o"></i>
-                                        <div class="clockdiv__date">
-                                            <p><span class="days"></span> Days,</p>
-                                        </div>
-                                        <div class="clockdiv__date">
-                                            <p><span class="hours"></span> Hours</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="" class="btn-Watch">Watch</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="load-more">
-                    <div class="listing-wrap">
-                        <div class="listing__title">
-                            <h2>yearly <span>Contest</span></h2>
-                        </div>
-                        <div class="listing__description text-box" data-maxlength="210">
-                            <h3><a href="#">Contest Name</a></h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nulla laudantium voluptate, consequuntur esse magnam dolorem numquam perspiciatis incidunt maxime perferendis quibusdam unde, vitae expedita quam laborum delectus.
-                                Natus, officiis!...........</p>
-                            <a href="view-details.html" class="btn-view-details">View Details</a>
-                            <a href="payment-now.html" class="btn-participate-now">Participate Now</a>
-                        </div>
-                        <div class="listing__last">
-                            <ul>
-                                <li><i class="fa fa-user"></i>
-                                    <p>100 <span>Paticipant</span></p>
-                                </li>
-                                <li>
-                                    <div class="clockdiv" data-date="December 22, 2023 21:14:01">
-                                        <i class="fa fa-clock-o"></i>
-                                        <div class="clockdiv__date">
-                                            <p><span class="days"></span> Days,</p>
-                                        </div>
-                                        <div class="clockdiv__date">
-                                            <p><span class="hours"></span> Hours</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="" class="btn-Watch">Watch</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="load-more">
-                    <div class="listing-wrap">
-                        <div class="listing__title">
-                            <h2>Weekly <span>Contest</span></h2>
-                        </div>
-                        <div class="listing__description text-box" data-maxlength="210">
-                            <h3><a href="#">Contest Name</a></h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nulla laudantium voluptate, consequuntur esse magnam dolorem numquam perspiciatis incidunt maxime perferendis quibusdam unde, vitae expedita quam laborum delectus.
-                                Natus, officiis!.........</p>
-                            <a href="view-details.html" class="btn-view-details">View Details</a>
-                            <a href="payment-now.html" class="btn-participate-now">Participate Now</a>
-                        </div>
-                        <div class="listing__last">
-                            <ul>
-                                <li><i class="fa fa-user"></i>
-                                    <p>100 <span>Paticipant</span></p>
-                                </li>
-                                <li>
-                                    <div class="clockdiv" data-date="May 13, 2022 21:14:01">
-                                        <i class="fa fa-clock-o"></i>
-                                        <div class="clockdiv__date">
-                                            <p><span class="days"></span> Days,</p>
-                                        </div>
-                                        <div class="clockdiv__date">
-                                            <p><span class="hours"></span> Hours</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="" class="btn-Watch">Watch</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="load-more">
-                    <div class="listing-wrap">
-                        <div class="listing__title">
-                            <h2>Monthly <span>Contest</span></h2>
-                        </div>
-                        <div class="listing__description text-box" data-maxlength="210">
-                            <h3><a href="#">Contest Name</a></h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nulla laudantium voluptate, consequuntur esse magnam dolorem numquam perspiciatis incidunt maxime perferendis quibusdam unde, vitae expedita quam laborum delectus.
-                                Natus, officiis!..........</p>
-                            <a href="view-details.html" class="btn-view-details">View Details</a>
-                            <a href="payment-now.html" class="btn-participate-now">Participate Now</a>
-                        </div>
-                        <div class="listing__last">
-                            <ul>
-                                <li><i class="fa fa-user"></i>
-                                    <p>100 <span>Paticipant</span></p>
-                                </li>
-                                <li>
-                                    <div class="clockdiv" data-date="December 22, 2022 18:22:23">
-                                        <i class="fa fa-clock-o"></i>
-                                        <div class="clockdiv__date">
-                                            <p><span class="days"></span> Days,</p>
-                                        </div>
-                                        <div class="clockdiv__date">
-                                            <p><span class="hours"></span> Hours</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="" class="btn-Watch">Watch</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="load-more">
-                    <div class="listing-wrap">
-                        <div class="listing__title">
-                            <h2>yearly <span>Contest</span></h2>
-                        </div>
-                        <div class="listing__description text-box" data-maxlength="210">
-                            <h3><a href="#">Contest Name</a></h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nulla laudantium voluptate, consequuntur esse magnam dolorem numquam perspiciatis incidunt maxime perferendis quibusdam unde, vitae expedita quam laborum delectus.
-                                Natus, officiis!...........</p>
-                            <a href="view-details.html" class="btn-view-details">View Details</a>
-                            <a href="payment-now.html" class="btn-participate-now">Participate Now</a>
-                        </div>
-                        <div class="listing__last">
-                            <ul>
-                                <li><i class="fa fa-user"></i>
-                                    <p>100 <span>Paticipant</span></p>
-                                </li>
-                                <li>
-                                    <div class="clockdiv" data-date="December 22, 2023 21:14:01">
-                                        <i class="fa fa-clock-o"></i>
-                                        <div class="clockdiv__date">
-                                            <p><span class="days"></span> Days,</p>
-                                        </div>
-                                        <div class="clockdiv__date">
-                                            <p><span class="hours"></span> Hours</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="" class="btn-Watch">Watch</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="load-more">
-                    <div class="listing-wrap">
-                        <div class="listing__title">
-                            <h2>Weekly <span>Contest</span></h2>
-                        </div>
-                        <div class="listing__description text-box" data-maxlength="210">
-                            <h3><a href="#">Contest Name</a></h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nulla laudantium voluptate, consequuntur esse magnam dolorem numquam perspiciatis incidunt maxime perferendis quibusdam unde, vitae expedita quam laborum delectus.
-                                Natus, officiis!.........</p>
-                            <a href="view-details.html" class="btn-view-details">View Details</a>
-                            <a href="payment-now.html" class="btn-participate-now">Participate Now</a>
-                        </div>
-                        <div class="listing__last">
-                            <ul>
-                                <li><i class="fa fa-user"></i>
-                                    <p>100 <span>Paticipant</span></p>
-                                </li>
-                                <li>
-                                    <div class="clockdiv" data-date="May 13, 2022 21:14:01">
-                                        <i class="fa fa-clock-o"></i>
-                                        <div class="clockdiv__date">
-                                            <p><span class="days"></span> Days,</p>
-                                        </div>
-                                        <div class="clockdiv__date">
-                                            <p><span class="hours"></span> Hours</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="" class="btn-Watch">Watch</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="load-more">
-                    <div class="listing-wrap">
-                        <div class="listing__title">
-                            <h2>Monthly <span>Contest</span></h2>
-                        </div>
-                        <div class="listing__description text-box" data-maxlength="210">
-                            <h3><a href="#">Contest Name</a></h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nulla laudantium voluptate, consequuntur esse magnam dolorem numquam perspiciatis incidunt maxime perferendis quibusdam unde, vitae expedita quam laborum delectus.
-                                Natus, officiis!..........</p>
-                            <a href="view-details.html" class="btn-view-details">View Details</a>
-                            <a href="payment-now.html" class="btn-participate-now">Participate Now</a>
-                        </div>
-                        <div class="listing__last">
-                            <ul>
-                                <li><i class="fa fa-user"></i>
-                                    <p>100 <span>Paticipant</span></p>
-                                </li>
-                                <li>
-                                    <div class="clockdiv" data-date="December 22, 2022 18:22:23">
-                                        <i class="fa fa-clock-o"></i>
-                                        <div class="clockdiv__date">
-                                            <p><span class="days"></span> Days,</p>
-                                        </div>
-                                        <div class="clockdiv__date">
-                                            <p><span class="hours"></span> Hours</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="" class="btn-Watch">Watch</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="load-more">
-                    <div class="listing-wrap">
-                        <div class="listing__title">
-                            <h2>yearly <span>Contest</span></h2>
-                        </div>
-                        <div class="listing__description text-box" data-maxlength="210">
-                            <h3><a href="#">Contest Name</a></h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nulla laudantium voluptate, consequuntur esse magnam dolorem numquam perspiciatis incidunt maxime perferendis quibusdam unde, vitae expedita quam laborum delectus.
-                                Natus, officiis!...........</p>
-                            <a href="view-details.html" class="btn-view-details">View Details</a>
-                            <a href="payment-now.html" class="btn-participate-now">Participate Now</a>
-                        </div>
-                        <div class="listing__last">
-                            <ul>
-                                <li><i class="fa fa-user"></i>
-                                    <p>100 <span>Paticipant</span></p>
-                                </li>
-                                <li>
-                                    <div class="clockdiv" data-date="December 22, 2023 21:14:01">
-                                        <i class="fa fa-clock-o"></i>
-                                        <div class="clockdiv__date">
-                                            <p><span class="days"></span> Days,</p>
-                                        </div>
-                                        <div class="clockdiv__date">
-                                            <p><span class="hours"></span> Hours</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="" class="btn-Watch">Watch</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="btn__seeMore">
-                    <a href="#" id="seeMore"><i class="fa fa-spinner" aria-hidden="true"></i> Show More</a>
+        <br>
+            <div class="row">
+                <div class="col contest_ajax_list" >
+    
+                    {{-- <div class="panel-body"> --}}
+                        {{ csrf_field() }}
+                        <div id="post_data"></div>
+                        {{-- </div> --}}
+    
+    
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
+<script>
+    $(document).ready(function(){
+
+        var _token = $('input[name="_token"]').val();
+        load_data('', _token);
+        function load_data(id="", _token){
+                $.ajax({
+                    url:"{{route('loadmore')}}",
+                    method: "POST",
+                    data: {id: id, _token:_token},
+                    success: function(data){
+                        $('#load_more_button').remove();
+                        
+                        $('#post_data').append(data);
+
+                    }
+                });
+        }
+
+        $(document).on('click', '#load_more_button', function(){
+            var id = $(this).data('id');
+
+            $('#load_more_button').html('<b>Loading ..</b>');
+            load_data(id, _token);
+
+        });
+    });
+
+
+// for contest list sorting 
+$(document).ready(function() {  
+   
+    $(document).on('change', '#sort', function() {
+            var getname = $('#sort').val();
+            var _token = $('input[name="_token"]').val();
+            load_data( getname, _token);
+            function load_data( getname, _token) {
+                $.ajax({
+                    url: "/contestListSorting",
+                    method: "POST",
+                    data: { getname: getname, _token: _token },
+                    success: function(data) {
+                        $('.load_more_button').remove();
+                        $('#post_data').html(data);
+
+                    }
+                });
+            }
+
+    });
+});
+
+
+</script>
+
 
 @endsection
