@@ -34,26 +34,39 @@
     $(document).ready(function(){
 
         var _token = $('input[name="_token"]').val();
-        load_data('', _token);
-        function load_data(id="", _token){
+        
+        load_data('', '', '', _token);
+
+       
+        function load_data(id="", limit="", ofset="",  _token){
                 $.ajax({
                     url:"{{route('loadmore')}}",
                     method: "POST",
-                    data: {id: id, _token:_token},
+                    data: {id: id,
+                         _token:_token,
+                         limit:limit,
+                         ofset:ofset,
+                       
+                        },
                     success: function(data){
                         $('#load_more_button').remove();
-                        
                         $('#post_data').append(data);
 
                     }
                 });
         }
 
+        
+
         $(document).on('click', '#load_more_button', function(){
             var id = $(this).data('id');
-
+            var limit = $(this).data('limit');
+            alert(limit);
+            var ofset = $(this).data('ofset');
+            alert(ofset);
+            
             $('#load_more_button').html('<b>Loading ..</b>');
-            load_data(id, _token);
+            load_data(id, limit, ofset, _token);
 
         });
     });

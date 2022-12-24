@@ -73,7 +73,7 @@ class RegisterController extends Controller{
             $password = $request->password;
             $h_password = Hash::make($password);
             $addUser->password = $h_password;
-            $addUser->user_id = "#".time();
+            $addUser->user_id = "U".time();
             $addUser->save();
             return response()->json(['success'=>'Added new records.']);
         }

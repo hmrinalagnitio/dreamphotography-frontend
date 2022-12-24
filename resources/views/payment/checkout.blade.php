@@ -33,6 +33,8 @@
                 foreach ($user_query as $users) {
                    $usersname = $users->name; 
                    $email = $users->email;
+                   $default_user_id = $users->user_id;
+                  
                 }
 
                   ?>
@@ -134,6 +136,7 @@
                                    
                                     <input type="hidden" name="contest_unique_id" id="contest_unique_id" value="{{$contest_unique_id}}">
                                     <input type="hidden" name="usersname" id="usersname" value="{{$usersname}}">
+                                    <input type="hidden" name="usersname" id="default_user_id" value="{{$default_user_id}}">
                                     <div style="text-align: left;">
                                         <div id="paypal-button-container"></div>
                                         {{-- <button type="submit" class="btn btn-primary">Pay With Paypal</button> --}}
@@ -197,6 +200,7 @@
 
         var pay_contest_unique_id = $('#contest_unique_id').val();
         var user_id = $('#user_id').val();
+        var default_user_id = $('#default_user_id').val();
         var amount = $('#amount').val();
         var pay_contest_id = $('#contest_id').val();
         var pay_contest_type_name = $('#contest_type_name').val();
@@ -213,6 +217,7 @@
             url: "/makepaypal",
             data: {
                 'user_id': user_id,
+                'default_user_id':default_user_id,
                 'amount': amount,
                 'pay_contest_unique_id':pay_contest_unique_id,
                 'pay_contest_id': pay_contest_id,
@@ -227,6 +232,7 @@
                 'payment_mode': "Paid by Paypal",
                 "payment_id": orderData.id,
                 "payment_status": orderData.status,
+                
             },
             headers: {
             'X-CSRF-Token': '{{ csrf_token() }}',

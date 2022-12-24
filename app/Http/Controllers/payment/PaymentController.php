@@ -26,8 +26,9 @@ class PaymentController extends Controller
         $user_id = Auth::id();
         $contest_payment_amount = DB::table('contests')->where('id', $contest_id)->get();
         foreach($contest_payment_amount as $payment_amount){
-       
+           
            $contest_unique_id = $payment_amount->id;
+
            $contest_type_name = $payment_amount->contest_type_name;
            $contest_name = $payment_amount->contest_name;
            $opening_date = $payment_amount->opening_date;
@@ -60,7 +61,8 @@ class PaymentController extends Controller
     public function place_order(Request $request){
       
         $user_id = Auth::id();
-        
+      
+        $default_user_id = $request->default_user_id;
         $amount = $request->input('amount'); 
         $pay_contest_unique_id = $request->input('pay_contest_unique_id');
         $payment_status = $request->input('payment_status');
@@ -84,6 +86,7 @@ class PaymentController extends Controller
             'payment_mode'=>$payment_mode,
             'payment_id'=>$payment_id,
             'user_id' => $user_id,
+            'default_user_id'=> $default_user_id,
             'name'=>$usersname,
             'email'=>$email,
             'contest_id'=> $pay_contest_id,

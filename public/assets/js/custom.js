@@ -105,6 +105,7 @@ $(".text-box p").text(function(index, currentText) {
 
 // Load More
 $(document).ready(function() {
+   
     $(".load-more").slice(0, 3).show();
     $("#seeMore").click(function(e) {
         e.preventDefault();
@@ -499,14 +500,11 @@ $(document).ready(function() {
 $(document).ready(function() {
 
     $(document).on('click', '.add_watch', function() {
-
         var contest_id = $(this).data("id");
         var user_id = $('#watch_user_id').data('value');
         if (user_id == "") {
             window.location.href = 'login';
-
         } else {
-
             $.ajax({
                 method: "post",
                 url: "/watch/" + user_id,
@@ -515,7 +513,6 @@ $(document).ready(function() {
                     'contest_id': contest_id
                 },
                 success: function(res) {
-
                     if (res.action == 'add') {
                         $('button[data-id=' + contest_id + ']').html('Watching');
                         location.reload();
@@ -557,6 +554,7 @@ $(document).ready(function() {
     $(document).on('click', '#seeMore', function(e) {
         e.preventDefault();
         var id = $(this).data('id');
+      
         load_more(id, token);
 
         //  alert(id);
@@ -596,7 +594,6 @@ $('#user_profile_pic').change(function(e) {
                 contentType: false,
                 processData: false,
                 success: function(res) {
-
                     $("#imageChecked").hide();
                     // location.reload();
                 }
@@ -614,8 +611,6 @@ $(document).on('click', '.btn-edi-Profile', function() {
         type: 'get',
         url: 'edit_user_profile/' + edit_prpfile_id,
         success: function(response) {
-
-
             $('#name').val(response.user_data.name);
             $('#address').val(response.user_data.address);
             $('#country_name').val(response.user_data.country);

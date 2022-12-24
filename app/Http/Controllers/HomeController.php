@@ -30,7 +30,9 @@ class HomeController extends Controller
 
     public function load_data(Request $request){
        
-        
+      
+     
+
         // if($request->ajax()){
             // if($request->id > 0){
              
@@ -48,19 +50,22 @@ class HomeController extends Controller
                
             // }
 
-
+           
         $getSortName = $request->getname;
+       
         if($request->id > 0){
 
             if($getSortName == 'DESC'){
+               
                 $data = DB::table('contest_sorting_prize')
                     ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
                     ->select('contest_sorting_prize.*', 'contests.*')
                     ->orderBy('contest_sorting_prize.contest_high_prize', 'desc')
                     ->where('contest_sort_id', '<', $request->id)
-                    ->paginate(3);
-                    // ->limit(3)
-                    // ->get();
+                    // ->paginate(3);
+                    ->offset($request->ofset)
+                    ->limit($request->limit)
+                    ->get();
                 
 
             }elseif($getSortName == 'ASC'){
@@ -69,7 +74,9 @@ class HomeController extends Controller
                     ->select('contest_sorting_prize.*', 'contests.*')
                     ->orderBy('contest_sorting_prize.contest_high_prize', 'asc')
                     ->where('contest_sort_id', '<', $request->id)
-                    ->paginate(3);
+                    ->offset($request->ofset)
+                    ->limit($request->limit)
+                    ->get();
                
             }elseif($getSortName == 'NEWDESC'){
                 $data = DB::table('contest_sorting_prize')
@@ -77,15 +84,19 @@ class HomeController extends Controller
                     ->select('contest_sorting_prize.*', 'contests.*')
                     ->orderBy('contest_sorting_prize.contest_sort_id', 'desc')
                     ->where('contest_sort_id', '<', $request->id)
-                    ->paginate(3);
+                    // ->paginate(3);
+                    ->offset($request->ofset)
+                    ->limit($request->limit)
+                    ->get();
             }else{
                
                 $data = DB::table('contest_sorting_prize')
                 ->join('contests', 'contest_sorting_prize.contest_sort_id', '=', 'contests.id')
                 ->select('contest_sorting_prize.*', 'contests.*')
                 ->orderBy('contest_sorting_prize.contest_sort_id', 'desc')
-                // ->where('contest_sort_id', '<', $request->id)
-                ->paginate(3);
+                ->offset($request->ofset)
+                ->limit($request->limit)
+                ->get();
             }
         }
         else{
@@ -106,7 +117,7 @@ class HomeController extends Controller
                             $post_description = substr($row->description_one,150,strlen($row->description_one));
                         }
                         // for prize section 
-                        // $prize =  DB::table('contest_prize_amounts')->where('contest_id', $row->contest_id)->max('prize_amount');
+                      
 
                     
                         // for days hours count
@@ -192,7 +203,8 @@ class HomeController extends Controller
                         ';
                         // $last_id = $row->contest_sort_id; 
                         $last_id = $row->id;
-                        // $last_id = $count;
+                        $ofset = 3;
+                        $limit = 3 + $ofset;
                         echo $last_id;
                         
                     }
@@ -201,7 +213,7 @@ class HomeController extends Controller
                     
                         <div id="load_more" class="btn__seeMore">
                             <button type="button" name="load_more_button"  
-                        data-id="'.$last_id.'" id="load_more_button"><i class="fa fa-spinner" aria-hidden="true"></i> Show More</button>
+                        data-id="'.$last_id.'"  data-limit="'.$limit.'" data-ofset="'.$ofset.'" id="load_more_button"><i class="fa fa-spinner" aria-hidden="true"></i> Show More</button>
                         </div>
                     
                     ';
@@ -244,7 +256,7 @@ class HomeController extends Controller
  
 
     public function contestListSorting(Request $request){
-        
+        print_r($request->limit);
         $getSortName = $request->getname;
         if($getSortName == 'DESC'){
             $data = DB::table('contest_sorting_prize')
@@ -282,8 +294,11 @@ class HomeController extends Controller
 
         $output = '';
         if(!$data->isEmpty()){
+           
+          
             $count = 0; 
             foreach($data as $row){
+             
                 $count +=1;
                 if(strlen($row->description_one) > 150){
                    $description = substr($row->description_one,0,150);
@@ -374,13 +389,15 @@ class HomeController extends Controller
              ';
                 $last_id = $row->id;
                 // $last_id = $count;
+                $ofset = 3;
+                $limit = 3 + $ofset;
                 echo $last_id;
             }
             $output .= '
            
                 <div id="load_more" class="btn__seeMore">
                     <button type="button" name="load_more_button"  
-                    data-id="'.$last_id.'" id="load_more_button"><i class="fa fa-spinner" aria-hidden="true"></i> Show More</button>
+                    data-id="'.$last_id.'"  data-limit="'.$limit.'" data-ofset="'.$ofset.'"   id="load_more_button"><i class="fa fa-spinner" aria-hidden="true"></i> Show More</button>
                 </div>
             ';
 

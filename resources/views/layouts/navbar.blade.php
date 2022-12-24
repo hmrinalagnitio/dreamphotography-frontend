@@ -127,7 +127,7 @@
                         <li><a href="{{route('my-account')}}"class="{{ request()->routeIs('my-account') ? 'active' : '' }}" >My Account</a></li>
                         <li><a href="{{route('contestlist')}}" class="{{ request()->routeIs('contestlist') ? 'active' : '' }}">Contests List</a></li>
                         <li><a href="{{route('mygallery')}}" class="{{ request()->routeIs('mygallery') ? 'active' : '' }}">Gallery</a></li>
-                        <li><a href="#">Status</a></li>
+                        <li><a href="{{route('status')}}" class="{{ request()->routeIs('mygallery') ? 'active' : '' }}">Status</a></li>
                         <li><a href="#">Results</a></li>
                         <li><a href="#">Participants List</a></li>
                     </ul>

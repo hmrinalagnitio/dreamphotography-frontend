@@ -12,6 +12,7 @@ use App\Http\Controllers\contest\{
     ImageUploadController,
     ImageUploadSuccessController,
     GalleryController,
+    StatusController,
 };
 
 use App\Http\Controllers\payment\{
@@ -53,7 +54,7 @@ Route::post('/checkEmail',[RegisterController::class, 'check'])->name('checkEmai
 Route::post('/watch/{user_id}',[HomeController::class, 'addwatch'])->name('watch');
 // for load more
 Route::get('/',[HomeController::class,'index'])->name('home');
-Route::get('/contestlist',[HomeController::class,'index'])->name('contestlist');
+Route::get('/contestlist',[HomeController::class,'index'])->name('contestlist'); 
 
 Route::post('/loadmore', [HomeController::class, 'load_data'])->name('loadmore');
 
@@ -91,6 +92,11 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::post('/upload_profile_img', [MyAccountController::class, 'upload_profile_image'])->name('upload_profile_img'); 
     Route::get('/edit_user_profile/{id}', [MyAccountController::class, 'edit_profile'])->name('edit_user_profile');
     Route::put('/update', [MyAccountController::class, 'update_profile'])->name('updateProfile');
+
+    // ========== Status ============
+    // ==============================
+    Route::get('/status', [StatusController::class, "index"])->name('status');
+    
 
     
     

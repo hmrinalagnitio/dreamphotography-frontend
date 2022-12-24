@@ -136,7 +136,6 @@
                                
                                 <?php
                             $user_id = Auth::id(); 
-                          
                             $img_data = DB::table('contest_image_uploads')
                                 ->where('user_id', $user_id)
                                 ->where('contest_unique_id', $con_unique_id)
@@ -160,7 +159,13 @@
                           
                             <div class="img-title jobDetail">
                                 <h3>Title</h3>
-                                <input type="hidden" name="contest_unique_id" id="contest_unique_id"
+                                                        
+                            </div>
+                            <form action="" id="upload-image-form" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                 {{-- drag --}}                  
+                                <div class="image-upload"> 
+                                    <input type="hidden" name="contest_unique_id" id="contest_unique_id"
                                     value="{{ $image_list->contest_unique_id }}">
                                 <input type="hidden" name="contest_id" id="contest_id"
                                     value="{{ $image_list->contest_id }}">
@@ -170,22 +175,19 @@
                                     value="{{ $image_list->contest_cat_name }}">
                                 <input type="hidden" name="contest_cat_slug" id="contest_cat_slug{{ $uid }}"
                                     value="{{ $image_list->contest_cat_slug }}">
-                                <input type="hidden" name="imageShow_id" id="imageShow_id" value="{{ $uid }}">                           
-                            </div>
-                            <form action="" id="upload-image-form" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                 {{-- drag --}}                  
-                                <div class="image-upload">    
+                                <input type="hidden" name="imageShow_id" id="imageShow_id" value="{{ $uid }}">      
                                 <input type="file" name="" id="imageUpload{{$uid}}"  >
                                 <input type="hidden" name="" id="imageUpload_id{{$uid}}" value="{{$uid}}"  >
                                 <input type="hidden" name="" id="delete_con_unique_id" value="{{$con_unique_id}}">
+                        
                                 <label for="logo" class="upload-field" id="file-label">
                                     <div class="file-thumbnail">
                                         @if($img_id == $uid)
                                         <img src="{{ asset('/storage/media/uploadimage/'.$img_path ) }}" 
                                         id="image-preview{{$uid}}" name="picture" alt="">
                                         <div class="del-icon delete_id{{ $img_id }}">
-                                            <input type="hidden" name="delete_img_id" id="delete_img_id{{ $img_id }}" value="{{ $img_id }}">
+                                            <input type="hidden" name="delete_img_id" id="delete_img_id{{ $img_id }}" value="{{ $img_id }}"
+                                            data-category_name="{{$image_list->contest_cat_name}}"  data-image_no="{{$image_list->number_of_image}}" >
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </div> 
                                         @php
@@ -253,11 +255,9 @@
                                 $('#image-msg{{ $uid }}').hide();
                                 $('#size-msg{{ $uid }}').hide();
                                 $("#imageUpload{{ $uid }}").change(function (e) {
-                                  
                                     const file = e.target.files[0];
                                     let url = window.URL.createObjectURL(file);
                                     var numb = $(this)[0].files[0].size / 1024 / 1024;
-                                    
                                     numb = numb.toFixed(2);
                                     var extension = $(this).val().split('.').pop().toLowerCase();
                                     var validFileExtensions = ['jpeg', 'jpg', 'PNG', 'png'];
@@ -318,7 +318,7 @@
                                                     contentType: false,
                                                     processData: false,
                                                     success: function (res) {
-                                                        location.reload();
+                                                        // location.reload();
                                                     
                                                     }
                                                 });
@@ -358,6 +358,12 @@
                             $(document).on('click', '.delete_id{{$uid}}', function(){
                                 var delete_image_id = $('#delete_img_id{{$uid}}').val();
                                 var delete_con_unique_id = $('#delete_con_unique_id').val();
+                                var category_name = $('#delete_img_id{{ $img_id }}').data("category_name");
+                                var image_no = $('#delete_img_id{{ $img_id }}').data('image_no');
+                              
+                             
+                                alert(delete_image_id);
+
                               
                                 $.ajax({
                                     method:"post",
@@ -365,10 +371,12 @@
                                     data:{
                                         'delete_image_id':delete_image_id,
                                         'delete_con_unique_id':delete_con_unique_id,
+                                        'category_name':category_name,
+                                        'image_no':image_no,
                                     },
                                     success:function(response){
                                         // console.log(response);
-                                        location.reload();
+                                        // location.reload();
                                     }
                                 });
 
@@ -379,7 +387,7 @@
                             $(document).on('click', '.remove_gallery_id{{$uid}}', function(){
                                 var remove_gallery_id = $('#remove_to_gallery{{$uid}}').val();
                                 var remove_con_unique_id = $('#contest_unique_id').val();
-                                alert(remove_con_unique_id); 
+                             
                                 $.ajax({
                                     method: 'post',
                                     url: '/removeImage',
