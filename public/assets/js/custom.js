@@ -172,6 +172,8 @@ $(document).ready(function() {
 // login submit btn click 
 $(document).ready(function() {
     var current_url = $('.hidden_url').val();
+    var base_url = $('.base_url').val();
+   
     var next_hidden_url = $('.next_hidden_url').val();
     var privous_url = $('.hidden_url').val();
     var btn_url = $(this).data("id");
@@ -198,7 +200,9 @@ $(document).ready(function() {
                     $('#loginerror').text(respons.error);
                 }
                 if (respons.success) {
+                    
                     location.href = current_url;
+                    // window.location = base_url; 
                 }
             }
         });
@@ -535,6 +539,7 @@ $(document).ready(function() {
 // for gallery page loadmore
 
 $(document).ready(function() {
+
     var token = $('input[name = "_token"]').val();
     load_more('', token);
 
@@ -554,7 +559,7 @@ $(document).ready(function() {
     $(document).on('click', '#seeMore', function(e) {
         e.preventDefault();
         var id = $(this).data('id');
-      
+        
         load_more(id, token);
 
         //  alert(id);

@@ -70,8 +70,7 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::post('/insertimage',[ImageUploadController::class, 'store'])->name('insertimage');
     // delete image 
     Route::post('/deleteImage', [ImageUploadController::class, 'destroy'])->name('deleteImage');
-    // remove gallery 
-    Route::post('/removeImage', [ImageUploadController::class, 'removeGalleryImage'])->name('removeImage');
+ 
     Route::get('/imgUploadSuccess', [ImageUploadSuccessController::class, 'index'])->name('imgUploadSuccess');
 
     // for paypal payment page 
@@ -83,6 +82,8 @@ Route::group(['middleware'=>['CustomAuth']], function(){
     Route::get('/mygallery', [GalleryController::class, 'index'])->name('mygallery');
     // add to gallery button
     Route::post('/addtogallery', [GalleryController::class, 'addToGallery'])->name('addtogallery');
+       // remove gallery 
+    Route::post('/removeImage', [GalleryController::class, 'removeGalleryImage'])->name('removeImage');
     // for load more gallery btn 
     Route::post('/load_more_data', [GalleryController::class, 'load_more_data'])->name('load_more_data');
     

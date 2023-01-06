@@ -62,11 +62,17 @@
 
 <div class="payment">
     @foreach($contest_image_list as $key => $image_list)
-    <?php $con_unique_id = $image_list->contest_unique_id; ?>
+    <?php $con_unique_id = $image_list->contest_unique_id; 
+
+    ?>
     @endforeach
     <div class="payment_btn">
         @php
         $user_id = Auth::id();
+       
+
+        $u_query = DB::table('users')->where('id', $user_id)->first();
+       
       
             $q = DB::table('contest_payments')->where('contest_unique_id', $con_unique_id)->get();
                 foreach ($q as  $value) {
@@ -93,6 +99,7 @@
 
 @foreach($contest_image_list as $key => $image_list)
     @php
+        
         $con_unique_id = $image_list->contest_unique_id;
         $contest_cat_slug_name = $image_list->contest_cat_name;
         $i = 0;
@@ -136,6 +143,7 @@
                                
                                 <?php
                             $user_id = Auth::id(); 
+                           
                             $img_data = DB::table('contest_image_uploads')
                                 ->where('user_id', $user_id)
                                 ->where('contest_unique_id', $con_unique_id)
@@ -144,15 +152,30 @@
                         
                             $img_id = '';
                             $contest_uniq_id = '';
+                                
+                        
 
                         if(($img_data)){               
                             foreach ($img_data as $data) {
+                              
+                                $img_upload_id = $data->id; 
+                              
                                 $img_path = $data->image_path;
                                 $img_id = $data->imageShow_id; 
+                                $delete_gallery_contest_id = $data->contest_id;
+                                $delete_gallery_category_name = $data->category_name;
+                                $delete_gallery_image_no = $data->image_no; 
+
+                              
                             }
+                            
                         }
+                     
+
+
+                         
+                      ?>
                       
-                        ?>
 
                             </div>
 
@@ -183,11 +206,14 @@
                                 <label for="logo" class="upload-field" id="file-label">
                                     <div class="file-thumbnail">
                                         @if($img_id == $uid)
-                                        <img src="{{ asset('/storage/media/uploadimage/'.$img_path ) }}" 
+                                    
+                                        
+                                        <img src="{{ asset('/storage/media/uploadimage/'.$image_list->contest_id.'/'.$u_query->user_id.'/'.$image_list->contest_cat_name.'/'.$image_list->number_of_image .'/'.$uid.'/'.$img_path ) }}" 
                                         id="image-preview{{$uid}}" name="picture" alt="">
                                         <div class="del-icon delete_id{{ $img_id }}">
                                             <input type="hidden" name="delete_img_id" id="delete_img_id{{ $img_id }}" value="{{ $img_id }}"
-                                            data-category_name="{{$image_list->contest_cat_name}}"  data-image_no="{{$image_list->number_of_image}}" >
+                                            data-category_name="{{$image_list->contest_cat_name}}"  data-image_no="{{$image_list->number_of_image}}"
+                                            data-contest_id="{{$image_list->contest_id}}" data-user_random_id = "{{$u_query->user_id}}"  >
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </div> 
                                         @php
@@ -205,16 +231,26 @@
                                                 $remove_image_user_id =  $value->user_id;
                                                 $remove_image_con_unique_id = $value->gallery_contest_unique_id;
                                             }
+
+
+                        
                                           
                                         @endphp
-                                        @if(($remove_image_show_id == $img_id) &&  ($remove_image_user_id == $user_id) && ($remove_image_con_unique_id == $con_unique_id))
+                                       
+                                        @if(($remove_image_show_id == $img_id) &&  ($remove_image_user_id == $user_id) && ($remove_image_con_unique_id == $con_unique_id) )
                                             <div class="minus-icon remove_gallery_id{{ $img_id }}">
-                                                <input type="hidden" name="remove_to_gallery" id="remove_to_gallery{{ $img_id }}" value="{{ $img_id }}">
+                                                <input type="hidden" name="remove_to_gallery" id="remove_to_gallery{{ $img_id }}" value="{{ $img_id }}"
+                                                data-remove_gallery_contest_id="{{$image_list->contest_id}}" data-remove_gallery_category_name="{{$image_list->contest_cat_name}}"  
+                                                data-remove_gallery_image_no="{{$image_list->number_of_image}}" data-remove_gallery_user_random_id = "{{$u_query->user_id}}"
+                                                data-remove_gallery_image_upload_id = "{{$img_upload_id}}" >
                                                 <i class="fa fa-minus" aria-hidden="true"></i>
                                             </div> 
                                         @else
                                             <div class="plus-icon add_gallery_id{{ $img_id }}">
-                                                <input type="hidden" name="add_to_gallery" id="add_to_gallery{{ $img_id }}" value="{{ $img_id }}">
+                                                <input type="hidden" name="add_to_gallery" id="add_to_gallery{{ $img_id }}" value="{{ $img_id }}" 
+                                                data-add_gallery_contest_id="{{$image_list->contest_id}}"  data-add_gallery_category_name="{{$image_list->contest_cat_name}}"  
+                                                data-add_gallery_image_no="{{$image_list->number_of_image}}" data-add_gallery_user_random_id = "{{$u_query->user_id}}"
+                                                data-add_gallery_image_upload_id = "{{$img_upload_id}}" >
                                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                             </div> 
                                         @endif
@@ -318,7 +354,7 @@
                                                     contentType: false,
                                                     processData: false,
                                                     success: function (res) {
-                                                        // location.reload();
+                                                        location.reload();
                                                     
                                                     }
                                                 });
@@ -331,13 +367,50 @@
                             });
 
                          
+                            // delete image 
+                            $(document).on('click', '.delete_id{{$uid}}', function(){
+                                var delete_image_id = $('#delete_img_id{{$uid}}').val();
+                                var delete_con_unique_id = $('#delete_con_unique_id').val();
+                                var category_name = $('#delete_img_id{{ $img_id }}').data("category_name");
+                                var image_no = $('#delete_img_id{{ $img_id }}').data('image_no');
+                                var contest_id = $('#delete_img_id{{$img_id}}').data('contest_id');
+                                var user_random_id = $('#delete_img_id{{$img_id}}').data('user_random_id');
+
+                             
+                                $.ajax({
+                                    method:"post",
+                                    url:"/deleteImage",
+                                    data:{
+                                        'delete_image_id':delete_image_id,
+                                        'delete_con_unique_id':delete_con_unique_id,
+                                        'category_name':category_name,
+                                        'image_no':image_no,
+                                        'contest_id':contest_id,
+                                        'user_random_id':user_random_id
+
+                                    },
+                                    success:function(response){
+                                        // console.log(response);
+                                        location.reload();
+                                    }
+                                });
+
+                            }); 
+
                             // add to gallery 
                             $('.addedgallery').hide();
                             $(document).on('click', '.add_gallery_id{{$uid}}', function(){
-                                
+                                var add_gallery_image_upload_id = $('#add_to_gallery{{$img_id}}').data('add_gallery_image_upload_id');
+                                var add_gallery_contest_id = $('#add_to_gallery{{$img_id}}').data('add_gallery_contest_id');
+                                var add_gallery_category_name = $('#add_to_gallery{{$img_id}}').data('add_gallery_category_name');
+                                var add_gallery_image_no = $('#add_to_gallery{{$img_id}}').data('add_gallery_image_no');
+                                var add_gallery_user_random_id = $('#add_to_gallery{{$img_id}}').data('add_gallery_user_random_id');
                                 var imageShow_id =$('#add_to_gallery{{$uid}}').val();
                                 var _token = $('input[name="_token"]').val();
                                 var contest_unique_id = $('#contest_unique_id').val();
+                                var user_random_id = $(this).data('user_random_id');
+                                    
+
                                 $.ajax({
                                     method: "POST",
                                     url: "{{route('addtogallery')}}",
@@ -345,6 +418,11 @@
                                         '_token':_token,
                                         'imageShow_id':imageShow_id,
                                         'contest_unique_id':contest_unique_id,
+                                        'add_gallery_contest_id':add_gallery_contest_id,
+                                        'add_gallery_category_name':add_gallery_category_name,
+                                        'add_gallery_image_no':add_gallery_image_no,
+                                        'add_gallery_user_random_id':add_gallery_user_random_id,
+                                        'add_gallery_image_upload_id':add_gallery_image_upload_id
                                     },
                                     success:function(res){
                                             // console.log(res);
@@ -354,49 +432,29 @@
                                                         
                             });
 
-                            // delete image 
-                            $(document).on('click', '.delete_id{{$uid}}', function(){
-                                var delete_image_id = $('#delete_img_id{{$uid}}').val();
-                                var delete_con_unique_id = $('#delete_con_unique_id').val();
-                                var category_name = $('#delete_img_id{{ $img_id }}').data("category_name");
-                                var image_no = $('#delete_img_id{{ $img_id }}').data('image_no');
-                              
-                             
-                                alert(delete_image_id);
-
-                              
-                                $.ajax({
-                                    method:"post",
-                                    url:"/deleteImage",
-                                    data:{
-                                        'delete_image_id':delete_image_id,
-                                        'delete_con_unique_id':delete_con_unique_id,
-                                        'category_name':category_name,
-                                        'image_no':image_no,
-                                    },
-                                    success:function(response){
-                                        // console.log(response);
-                                        // location.reload();
-                                    }
-                                });
-
-                            }); 
-
-
                             // for remove from gallery image 
                             $(document).on('click', '.remove_gallery_id{{$uid}}', function(){
+                                var remove_gallery_image_upload_id = $('#remove_to_gallery{{$img_id}}').data('remove_gallery_image_upload_id');
                                 var remove_gallery_id = $('#remove_to_gallery{{$uid}}').val();
                                 var remove_con_unique_id = $('#contest_unique_id').val();
-                             
+                                var remove_gallery_contest_id = $('#remove_to_gallery{{$img_id}}').data('remove_gallery_contest_id');
+                                var remove_gallery_category_name = $('#remove_to_gallery{{$img_id}}').data('remove_gallery_category_name');
+                                var remove_gallery_image_no = $('#remove_to_gallery{{$img_id}}').data('remove_gallery_image_no');
+                                var remove_gallery_user_random_id = $('#remove_to_gallery{{$img_id}}').data('remove_gallery_user_random_id');
+                                   
                                 $.ajax({
                                     method: 'post',
                                     url: '/removeImage',
                                     data:{
                                         'remove_gallery_id':remove_gallery_id,
-                                        'remove_con_unique_id':remove_con_unique_id
+                                        'remove_con_unique_id':remove_con_unique_id,
+                                        'remove_gallery_contest_id':remove_gallery_contest_id,
+                                        'remove_gallery_category_name':remove_gallery_category_name,
+                                        'remove_gallery_image_no':remove_gallery_image_no,
+                                        'remove_gallery_user_random_id':remove_gallery_user_random_id
                                     },
                                     success:function(res){
-                                        console.log(res);
+                                       
                                         location.reload();
 
 
