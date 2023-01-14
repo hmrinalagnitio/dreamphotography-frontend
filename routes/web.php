@@ -31,6 +31,11 @@ use App\Http\Controllers\payment\{
 Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });
+
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('cache:clear');
+    // return what you want
+});
 Auth::routes();
 
 

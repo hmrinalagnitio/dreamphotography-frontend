@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
+use App\Models\WacthList;
 class MyAccountController extends Controller
 {
     //

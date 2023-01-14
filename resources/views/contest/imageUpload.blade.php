@@ -153,13 +153,10 @@
                             $img_id = '';
                             $contest_uniq_id = '';
                                 
-                        
-
                         if(($img_data)){               
                             foreach ($img_data as $data) {
                               
                                 $img_upload_id = $data->id; 
-                              
                                 $img_path = $data->image_path;
                                 $img_id = $data->imageShow_id; 
                                 $delete_gallery_contest_id = $data->contest_id;
@@ -171,9 +168,6 @@
                             
                         }
                      
-
-
-                         
                       ?>
                       
 
@@ -232,9 +226,6 @@
                                                 $remove_image_con_unique_id = $value->gallery_contest_unique_id;
                                             }
 
-
-                        
-                                          
                                         @endphp
                                        
                                         @if(($remove_image_show_id == $img_id) &&  ($remove_image_user_id == $user_id) && ($remove_image_con_unique_id == $con_unique_id) )

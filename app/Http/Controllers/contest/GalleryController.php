@@ -142,7 +142,6 @@ class GalleryController extends Controller
                 ->get();
                 
                
-               
             }
        }
        return view('contest.gallery_load_more', ['gallery_data'=>$gallery_data]);

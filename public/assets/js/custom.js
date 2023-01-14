@@ -448,6 +448,7 @@ $(document).ready(function() {
 
 
 
+
     $('#c_password').on('keyup', function() {
 
         if ($('#password').val() == $('#c_password').val()) {
@@ -534,6 +535,36 @@ $(document).ready(function() {
 
 
 });
+
+
+
+// ========================
+//  contest list filter
+// =========================
+
+// $(document).ready(function() {
+
+
+//     $('#sort').on('change', function() {
+//         var getname = $("#sort option:selected").val();
+//         alert(getname);
+//         $.ajax({
+//             type: 'get',
+//             url: "/contestListSorting",
+//             data: {
+//                 'getname': getname
+//             },
+//             success: function(data) {
+//                 $('.load_more_button').remove();
+//                 $('#post_data').append(data);
+
+//             }
+//         });
+//         $('.load-more ').remove();
+
+//     });
+
+// });
 
 
 // for gallery page loadmore

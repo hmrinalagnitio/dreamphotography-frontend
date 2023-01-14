@@ -108,15 +108,12 @@
                     
         
                 <div class="my-details">
-                    <h1>Alex Jones</h1>
+                    <h1>{{$item->name}}</h1>
                     <div class="my-details-row">
                         <div class="my-details-col-left"><span>Email Id :</span></div>
                         <div class="my-details-col-right">{{$item->email}}</div>
                     </div>
-                    {{-- <div class="my-details-row">
-                        <div class="my-details-col-left"><span>Gender:</span></div>
-                        <div class="my-details-col-right">Male</div>
-                    </div> --}}
+               
                     <div class="my-details-row">
                         <div class="my-details-col-left"><span>Mobile No :</span></div>
                         <div class="my-details-col-right">{{$item->phone_number}}</div>
@@ -139,10 +136,18 @@
     <div class="container">
         <div class="contest-list-box">
             <div class="contest-list-first">
+                @php
+                $user_id = Auth::id();
+                $all_contests = DB::table('contest_payments')->where('user_id',$user_id)->count();
+
+                // echo "<pre>";
+                //     print_r($all_contests);
+                //     exit; 
+                @endphp
                 <ul>
                     <li class="bgF1">
                         <p>Total Contest</p>
-                        <h4>52</h4>
+                        <h4>{{$all_contests}}</h4>
                     </li>
                     <li class="bgF2">
                         <p>Total Win</p>
@@ -158,7 +163,7 @@
                 <img src="assets/images/icon-daily1.png" alt="">
                 <h3>Daily Contest</h3>
                 <div class="total-contest-row">
-                    <div class="total-contest-col">Total Contest <span class="win-color">17</span></div>
+                    <div class="total-contest-col">Total Contest <span class="win-color">{{$all_contests}}</span></div>
                     <div class="total-contest-col-right">Total Win <span class="contest-color">04</span></div>
                 </div>
             </div>
@@ -194,16 +199,108 @@
                 </select>
             </div>
         </div>
-        <br>
-            <div class="row">
-                <div class="col contest_ajax_list" >
-    
-                    {{-- <div class="panel-body"> --}}
-                        {{ csrf_field() }}
-                        <div id="post_data"></div>
-                        {{-- </div> --}}
-    
-    
+        <div class="row">
+            <?php
+                $q_contest_list = DB::table('contest_payments')
+                        ->where('user_id', $user_id)
+                        ->limit(3)
+                        ->get();
+
+                $q_contest_perticipants = DB::table('contest_payments')
+                        ->where('user_id', $user_id)
+                        ->count();
+
+                foreach ($q_contest_list as $value) {
+                    $contest_id[] = $value->contest_unique_id;
+                }
+                $q_contest_list_data = DB::table('contests')->whereIn('id', $contest_id)->get();
+                
+                
+                 
+                
+            ?>
+            <div class="col">
+               
+                    @foreach($q_contest_list_data as $contest_data)
+                    <?php
+                       // for days hours count
+                        $now = \Carbon\Carbon::now();
+                        $end_date = $contest_data->closing_date;
+                        $end_time = $contest_data->closing_time;
+                        $cDate = \Carbon\Carbon::parse($end_date);
+                        $cHours = \Carbon\Carbon::parse($end_time);
+                        $end_days = $now->diffInDays($cDate );
+                        $end_hours = $now->diffInHours($cHours);
+                   
+                        if(strlen($contest_data->description_one) > 150){
+                            $description = substr($contest_data->description_one,0,150);
+                            $post_description = substr($contest_data->description_one,150,strlen($contest_data->description_one));
+                           
+                        }
+                        
+
+                                
+                    ?>
+                      <div class="load-more contemt--wrapper">
+                        <div class="listing-wrap">
+                            <div class="listing__title">
+                                <h2> <span id="contest_list_data"> {{$contest_data->contest_type_name}}</span></h2>
+                            <div class="listing-design__price">
+                                <div class="ribbon__fold"></div>
+                            <div class="ribbon__text">
+                             2000
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ribbon ribbon--large ribbon--info" data-tooltip=""
+                    data-tooltip-content="[data-price-tooltip-content-1188035]">
+                    <div class="listing__description text-box" data-maxlength="210">
+                        <h3><a href="#">{{$contest_data->contest_name}}</a>
+                        </h3>
+                        <div class="comment">{{$description}}
+                            <span class="read-more-show "> <a class="btn-view-details">View Details</a></span>
+                            <span class="read-more-content hide_content"> {{$post_description}}
+                            <span class="read-more-hide "><a class="btn-view-details">View less</a></span> </span>
+                    </div>
+                    <br>
+                    <div class="participate">
+                        <a href="{{route('viewdetails',['id'=>$contest_data->id])}}"
+                            class="btn-participate-now">Participate Now</a>
+                    </div>
+                    </div>
+                    <div class="listing__last">
+                    <ul>
+                        <li><i class="fa fa-user"></i>
+                            <p>100 <span>Paticipant</span></p>
+                        </li>
+                        <li>
+                            <div class="clockdiv" data-date="May 13, 2022 21:14:01">
+                                <i class="fa fa-clock-o"></i>
+                                <div class="clockdiv__date">
+                                </div>
+                                <div class="clockdiv__date"> 
+                                    <p><span class="days">{{$end_days}} Days </span> </p> 
+                                </div>
+                                <div class="clockdiv__date">
+                                    <p><span class="hours"> {{$end_hours}} Hours</span></p>
+                                </div>
+                            </div>
+                        </li>
+                        <input type="hidden" value="{{Auth::id()}}" id="user_id">
+                       
+                    </ul>
+                </div>
+        </div>
+        </div>        
+     </div>
+
+                   
+                    @endforeach
+                </div>
+              
+                <div class="btn__seeMore">
+                    <a href="#" id="seeMore"><i class="fa fa-spinner" aria-hidden="true"></i> Show More</a>
                 </div>
             </div>
         </div>

@@ -31,25 +31,7 @@ class HomeController extends Controller
     public function load_data(Request $request){
        
       
-     
-
-        // if($request->ajax()){
-            // if($request->id > 0){
-             
-            //     $data = DB::table('contests')
-            //             ->where('id', '<', $request->id)
-            //             ->orderBy('id', 'desc')
-            //             ->limit(3)
-            //             ->get();                
-            // }else{
-            //     $data = DB::table('contests')
-            //             ->where('is_status', 1)
-            //             ->orderBy('id', 'desc')
-            //             ->limit(3)
-            //             ->get();
-               
-            // }
-
+      
            
         $getSortName = $request->getname;
        
@@ -111,7 +93,9 @@ class HomeController extends Controller
                 $last_id = ''; 
                 if(!$data->isEmpty()){
                     foreach($data as $row){
-                    
+                        
+                       
+                      
                         if(strlen($row->description_one) > 150){
                             $description = substr($row->description_one,0,150);
                             $post_description = substr($row->description_one,150,strlen($row->description_one));
@@ -155,9 +139,9 @@ class HomeController extends Controller
                         <div class="ribbon ribbon--large ribbon--info" data-tooltip=""
                                     data-tooltip-content="[data-price-tooltip-content-1188035]">
                                     <div class="listing__description text-box" data-maxlength="210">
-                                        <h3><a href="#">'. $row->contest_name.'</a>
+                                        <h3><a href="#">'.$row->contest_name.'</a>
                                         </h3>
-                                        <div class="comment">'.$description .'
+                                        <div class="comment">'.$description.'
                                             <span class="read-more-show "> <a class="btn-view-details">View Details</a></span>
                                             <span class="read-more-content hide_content"> '.$post_description.'
                                             <span class="read-more-hide "><a class="btn-view-details">View less</a></span> </span>
@@ -226,7 +210,7 @@ class HomeController extends Controller
                     ';
                 }
                 echo $output; 
-        // }
+        // } 
             
     }
 
@@ -256,7 +240,8 @@ class HomeController extends Controller
  
 
     public function contestListSorting(Request $request){
-        print_r($request->limit);
+        // print_r($request->limit);
+        
         $getSortName = $request->getname;
         if($getSortName == 'DESC'){
             $data = DB::table('contest_sorting_prize')
@@ -298,6 +283,8 @@ class HomeController extends Controller
           
             $count = 0; 
             foreach($data as $row){
+
+              
              
                 $count +=1;
                 if(strlen($row->description_one) > 150){
